@@ -12,12 +12,13 @@ import java.awt.Color;
 
 import com.alexis.common.LayoutHelper.*;
 import com.alexis.common.Utils;
-import com.alexis.common.Component.*;
 import com.alexis.common.Components.Components;
 import com.alexis.common.LayoutBuilder.*;
 import com.alexis.common.RoundedPanel.RoundedPanel;
 import com.alexis.store.Store;
+import com.alexis.store.User;
 import com.alexis.common.SimpleDocumentListener.*;
+import com.alexis.components._global.Notification.Notification;
 
 public class LoginBox extends com.alexis.common.Component.Component {
   private JLabel cTitle;
@@ -34,19 +35,32 @@ public class LoginBox extends com.alexis.common.Component.Component {
   private Components components;
   private LayoutBuilder layoutBuilder;
 
+  private void handleOnClickSignin() {
+    User user = Store.getInstance().getOtherUsers().findUserByUsername(this.username);
+
+    if (user == null) {
+      Notification.addNotification(parent.getParent().getPanel(), "This user doesn't exist", Color.WHITE, Color.RED);
+    } else {
+      if (user.getPassword().equals(this.password)) {
+        Notification.addNotification(parent.getParent().getPanel(), "OK", Color.WHITE, Color.GREEN);
+      } else {
+        Notification.addNotification(parent.getParent().getPanel(), "Incorrect password", Color.WHITE, Color.RED);
+      }
+
+    }
+  }
+
   private void activateSigninButton(boolean isActivated) {
     if (isActivated) {
       this.signinBtn.setBackground(Color.BLUE);
       this.signinBtn.setEnabled(true);
-    }
-    else {
+    } else {
       this.signinBtn.setBackground(Color.GRAY);
       this.signinBtn.setEnabled(false);
     }
   }
 
   private void handleOnChangePasswordInput() {
-    System.out.println(this.pwdField.getPassword());
 
     if (dontUpdatePwd == false) {
       this.password = new String(this.pwdField.getPassword());
@@ -100,7 +114,7 @@ public class LoginBox extends com.alexis.common.Component.Component {
 
     this.signinBtn.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        System.out.println("SIGNIN !!");
+        handleOnClickSignin();
       }
     });
 

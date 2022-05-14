@@ -4,9 +4,10 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.font.TextAttribute;
 import java.util.Map;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.awt.event.*;
-
+import javax.swing.event.*;
 import java.awt.Color;
 
 import com.alexis.common.LayoutHelper.*;
@@ -16,17 +17,87 @@ import com.alexis.common.Components.Components;
 import com.alexis.common.LayoutBuilder.*;
 import com.alexis.common.RoundedPanel.RoundedPanel;
 import com.alexis.store.Store;
+import com.alexis.common.SimpleDocumentListener.*;
+import com.alexis.common.UserSaveFileParser.UserSaveFileParser;
+import com.alexis.common.UserType.StandardUser.StandardUser;
+import com.alexis.components._global.Notification.Notification;
+import com.alexis.db.InitDB;
+import com.alexis.store.User;
 
 public class SignupBox extends com.alexis.common.Component.Component {
   private JLabel cTitle;
   private Image logo;
   private Point logoPos;
   private JTextField emailField;
+  private JTextField usernameField;
   private JPasswordField pwdField;
   private JButton signupBtn;
   private JButton signinBtn;
+  private String email;
+  private String username;
+  private String password;
+  private boolean dontUpdateEmail;
+  private boolean dontUpdateUsername;
+  private boolean dontUpdatePwd;
   private Components components;
   private LayoutBuilder layoutBuilder;
+
+  private void handleOnClickSignup() {
+    System.out.println("SIGNUP !!");
+    User user = Store.getInstance().getOtherUsers().findUserByUsername(this.username);
+    if (user != null) {
+      Notification.addNotification(this.parent.getParent().getPanel(), "User " + this.username + " already exist", Color.BLACK, Color.YELLOW);
+      return;
+    }
+    ArrayList<String> hobbies = new ArrayList<String>();
+    hobbies.add("NONE");
+    User newUser = new StandardUser(this.username, this.password, "NONE", "NONE", 0, this.email, hobbies, "NONE");
+    Store.getInstance().setUser(newUser);
+    UserSaveFileParser saveParser = new UserSaveFileParser(Utils.getSaveFilePathByUsername(this.username));
+    saveParser.save(newUser);
+    InitDB.addUserToUsernameList(this.username);
+  }
+
+  private void activateSignupButton(boolean isActivated) {
+    if (isActivated) {
+      this.signupBtn.setBackground(Color.BLUE);
+      this.signupBtn.setEnabled(true);
+    } else {
+      this.signupBtn.setBackground(Color.GRAY);
+      this.signupBtn.setEnabled(false);
+    }
+  }
+
+  private void handleOnChangePasswordInput() {
+
+    if (dontUpdatePwd == false) {
+      this.password = new String(this.pwdField.getPassword());
+      if (this.password.length() != 0 && this.email.length() != 0 && this.username.length() != 0)
+        this.activateSignupButton(true);
+      else
+        this.activateSignupButton(false);
+    }
+  }
+
+  private void handleOnChangeUsernameInput() {
+    if (dontUpdateUsername == false) {
+      this.username = this.usernameField.getText();
+      if (this.password.length() != 0 && this.email.length() != 0 && this.username.length() != 0)
+        this.activateSignupButton(true);
+      else
+        this.activateSignupButton(false);
+    }
+  }
+
+  private void handleOnChangeEmailInput() {
+    if (dontUpdateEmail == false) {
+      this.email = this.emailField.getText();
+      if (this.password.length() != 0 && this.email.length() != 0 && this.username.length() != 0)
+        this.activateSignupButton(true);
+      else
+        this.activateSignupButton(false);
+    }
+  }
 
   private void initSigninButton() {
     this.signinBtn = new JButton("Click here to log in");
@@ -56,8 +127,16 @@ public class SignupBox extends com.alexis.common.Component.Component {
         new Margin(40, 0, (int) LayoutHelper.getCenter(this.panel.getBounds().width, 0, 350, 0).getX(), 0));
     this.signupBtn.setBounds((int) location.getX(), (int) location.getY(), 350, 50);
     this.signupBtn.setFont(new Font("BlinkMacSystemFont", Font.PLAIN, 18));
-    this.signupBtn.setBackground(Color.BLUE);
+    this.signupBtn.setBackground(Color.GRAY);
     this.signupBtn.setForeground(Color.WHITE);
+    this.signupBtn.setEnabled(false);
+
+    this.signupBtn.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        handleOnClickSignup();
+      }
+    });
+
     this.panel.add(this.signupBtn);
   }
 
@@ -72,7 +151,68 @@ public class SignupBox extends com.alexis.common.Component.Component {
     this.pwdField.setBorder(BorderFactory.createCompoundBorder(
         this.pwdField.getBorder(),
         BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+
+    this.pwdField.addFocusListener(new FocusListener() {
+      public void focusGained(FocusEvent fe) {
+        dontUpdatePwd = false;
+        pwdField.setEchoChar('*');
+        pwdField.setText(password);
+        pwdField.setForeground(Color.BLACK);
+      }
+
+      public void focusLost(FocusEvent fe) {
+        if (password.length() == 0) {
+          dontUpdatePwd = true;
+          pwdField.setEchoChar((char) 0);
+          pwdField.setText("Password");
+          pwdField.setForeground(new Color(171, 171, 171));
+        }
+      }
+    });
+    this.pwdField.getDocument().addDocumentListener(new SimpleDocumentListener() {
+      @Override
+      public void update(DocumentEvent e) {
+        handleOnChangePasswordInput();
+      }
+    });
     this.panel.add(this.pwdField);
+  }
+
+  private void initUsernameField() {
+    this.usernameField = new JTextField();
+    Point uField = layoutBuilder.next(350, 50,
+        new Margin(40, 0, (int) LayoutHelper.getCenter(this.panel.getBounds().width, 0, 350, 0).getX(), 0));
+    this.usernameField.setBounds((int) uField.getX(), (int) uField.getY(), 350, 50);
+    this.usernameField.setText("Username");
+    this.usernameField.setForeground(new Color(171, 171, 171));
+    this.usernameField.setFont(new Font("BlinkMacSystemFont", Font.PLAIN, 18));
+    this.usernameField.setBorder(BorderFactory.createCompoundBorder(
+        this.usernameField.getBorder(),
+        BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+
+    this.usernameField.addFocusListener(new FocusListener() {
+      public void focusGained(FocusEvent fe) {
+        dontUpdateUsername = false;
+        usernameField.setText(username);
+        usernameField.setForeground(Color.BLACK);
+      }
+
+      public void focusLost(FocusEvent fe) {
+        if (username.length() == 0) {
+          dontUpdateUsername = true;
+          usernameField.setText("Username");
+          usernameField.setForeground(new Color(171, 171, 171));
+        }
+      }
+    });
+    this.usernameField.getDocument().addDocumentListener(new SimpleDocumentListener() {
+      @Override
+      public void update(DocumentEvent e) {
+        handleOnChangeUsernameInput();
+      }
+    });
+    this.panel.add(this.usernameField);
+
   }
 
   private void initEmailField() {
@@ -86,6 +226,29 @@ public class SignupBox extends com.alexis.common.Component.Component {
     this.emailField.setBorder(BorderFactory.createCompoundBorder(
         this.emailField.getBorder(),
         BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+
+    this.emailField.addFocusListener(new FocusListener() {
+      public void focusGained(FocusEvent fe) {
+        dontUpdateEmail = false;
+        emailField.setText(email);
+        emailField.setForeground(Color.BLACK);
+      }
+
+      public void focusLost(FocusEvent fe) {
+        if (email.length() == 0) {
+          dontUpdateEmail = true;
+          emailField.setText("E-mail");
+          emailField.setForeground(new Color(171, 171, 171));
+        }
+      }
+    });
+    this.emailField.getDocument().addDocumentListener(new SimpleDocumentListener() {
+      @Override
+      public void update(DocumentEvent e) {
+        handleOnChangeEmailInput();
+      }
+    });
+
     this.panel.add(this.emailField);
   }
 
@@ -114,18 +277,30 @@ public class SignupBox extends com.alexis.common.Component.Component {
     this.panel.add(this.cTitle);
   }
 
-  public SignupBox(String name, Components parent) {
-    super(name, parent);
+  private void initClassAttributes() {
     this.components = new Components(this);
     this.layoutBuilder = new LayoutBuilder(0, 0, LayoutBuilder.VERTICAL_ALIGN);
     this.panel = new SignupBoxPanel(30, Color.WHITE);
     this.panel.setLayout(null);
-    this.panel.setBounds((Utils.SCREEN_WIDTH / 2) - (700 / 2), (Utils.SCREEN_HEIGHT / 2) - (550 / 2), 700, 550);
+    this.panel.setBounds((Utils.SCREEN_WIDTH / 2) - (700 / 2), (Utils.SCREEN_HEIGHT / 2) - (600 / 2), 700, 600);
     this.panel.setOpaque(false);
     this.panel.setFocusable(true);
+
+    this.email = "";
+    this.username = "";
+    this.password = "";
+    this.dontUpdateEmail = false;
+    this.dontUpdateUsername = false;
+    this.dontUpdatePwd = false;
+  }
+
+  public SignupBox(String name, Components parent) {
+    super(name, parent);
+    this.initClassAttributes();
     this.initLogo();
     this.initTitle();
     this.initEmailField();
+    this.initUsernameField();
     this.initPwdField();
     this.initSignupButton();
     this.initSigninButton();
@@ -150,4 +325,3 @@ public class SignupBox extends com.alexis.common.Component.Component {
   }
 
 }
-

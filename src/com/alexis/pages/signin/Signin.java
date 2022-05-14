@@ -4,8 +4,10 @@ import javax.swing.JPanel;
 import java.awt.*;
 
 import com.alexis.components.signin.LoginBox.LoginBox;
+import com.alexis.store.Store;
 import com.alexis.common.Utils;
 import com.alexis.common.Components.Components;
+import com.alexis.components._global.Notification.*;
 
 public class Signin extends com.alexis.common.Component.Component {
   private Components components;
@@ -29,7 +31,7 @@ public class Signin extends com.alexis.common.Component.Component {
     @Override
     protected void paintComponent(Graphics g) {
       super.paintComponent(g);
-      Graphics2D g2D = (Graphics2D)g;
+      Graphics2D g2D = (Graphics2D) g;
       GradientPaint gradient = new GradientPaint(0, 0, Color.BLUE, 50, 700, Color.RED);
       g2D.setPaint(gradient);
       g2D.fillRect(0, 0, getWidth(), getHeight());

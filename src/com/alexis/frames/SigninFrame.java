@@ -20,9 +20,9 @@ public class SigninFrame {
       this.component = new Signin("Signin", null);
       this.main = this.component.getPanel();
       this.frame.setTitle("Signin - SKOC");
-      this.frame.getContentPane().removeAll(); //or .remove(previousPanel);
+      this.frame.getContentPane().removeAll();
       this.frame.getContentPane().add(this.main);
-      this.frame.revalidate(); // in- and validate in one !! 
+      this.frame.revalidate();
       this.frame.pack(); // 
       System.out.println("Signin !");
     }

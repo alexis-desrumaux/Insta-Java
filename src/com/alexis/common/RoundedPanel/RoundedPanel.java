@@ -7,6 +7,12 @@ public class RoundedPanel extends JPanel {
   private Color backgroundColor;
   private int cornerRadius = 15;
 
+  public void setBackgroundColor(Color bgColor) {
+    backgroundColor = bgColor;
+    revalidate();
+    repaint();
+  }
+
   public RoundedPanel(int radius) {
     super();
     cornerRadius = radius;

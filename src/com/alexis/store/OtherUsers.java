@@ -33,7 +33,7 @@ public class OtherUsers {
 
   public User findUserByUsername(String username) {
     for (User u : otherUsers) {
-      if (u.getNickName() == username)
+      if (u.getNickName().equals(username))
         return u;
     }
     return null;
