@@ -4,14 +4,42 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import com.alexis.pages.signin.*;
+import com.alexis.pages.signup.Signup;
 import com.alexis.store.Store;
 import com.alexis.common.Utils;
+import com.alexis.common.Component.*;
 
 public class SigninFrame {
   
   private JFrame frame;
   private JPanel main;
-  private Signin signin;
+  private Component component;
+
+  public void changingToSignin() {
+    if (this.component.getName() == "Signup") {
+      this.component = new Signin("Signin", null);
+      this.main = this.component.getPanel();
+      this.frame.setTitle("Signin - SKOC");
+      this.frame.getContentPane().removeAll(); //or .remove(previousPanel);
+      this.frame.getContentPane().add(this.main);
+      this.frame.revalidate(); // in- and validate in one !! 
+      this.frame.pack(); // 
+      System.out.println("Signin !");
+    }
+  }
+
+  public void changingToSignup() {
+    if (this.component.getName() == "Signin") {
+      this.component = new Signup("Signup", null);
+      this.main = this.component.getPanel();
+      this.frame.setTitle("Signup - SKOC");
+      this.frame.getContentPane().removeAll(); //or .remove(previousPanel);
+      this.frame.getContentPane().add(this.main);
+      this.frame.revalidate(); // in- and validate in one !! 
+      this.frame.pack(); // 
+      System.out.println("Signup !");
+    }
+  }
 
   public JFrame getFrame() {
     return this.frame;
@@ -24,8 +52,8 @@ public class SigninFrame {
     this.frame.setFocusable(true);
     this.frame.requestFocus();
     this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    this.signin = new Signin("Signin", null);
-    this.main = this.signin.getPanel();
+    this.component = new Signin("Signin", null);
+    this.main = this.component.getPanel();
     this.frame.add(this.main);
     this.frame.pack();
     this.frame.setVisible(true);

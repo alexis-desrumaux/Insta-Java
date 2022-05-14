@@ -8,12 +8,18 @@ import com.alexis.store.*;
 
 public class App {
     private JFrame frame;
+    private SigninFrame signinFrame;
+
+    public SigninFrame getSigninFrame() {
+        return this.signinFrame;
+    }
 
     public void displaySigninFrame() {
         if (this.frame != null) {
             this.frame.dispose();
         }
-        this.frame = new SigninFrame().getFrame();
+        this.signinFrame = new SigninFrame();
+        this.frame = this.signinFrame.getFrame();
     }
 
     public void displayMainFrame() {
