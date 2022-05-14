@@ -1,8 +1,8 @@
-package com.alexis.common.components;
+package com.alexis.common.Components;
 
 import java.util.ArrayList;
 
-import com.alexis.common.component.*;
+import com.alexis.common.Component.*;
 
 public class Components {
   private final ArrayList<Component> components = new ArrayList<Component>();

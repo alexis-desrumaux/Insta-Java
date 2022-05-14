@@ -1,14 +1,21 @@
-package com.alexis.common.component;
+package com.alexis.common.Component;
 
 import javax.swing.JPanel;
 
-import com.alexis.common.components.*;
+import com.alexis.common.Components.*;
 
 public abstract class Component {
-  public String name;
-  public Components parent;
+  protected String name;
+  protected Components parent;
+  protected JPanel panel;
 
-  public abstract JPanel getPanel();
+  public void setPanel(JPanel j) {
+    this.panel = j;
+  }
+
+  public JPanel getPanel() {
+    return this.panel;
+  }
 
   public Components getParent() {
     return this.parent;
@@ -27,5 +34,6 @@ public abstract class Component {
   public Component(String name, Components parent) {
     this.name = name;
     this.parent = parent;
+    this.panel = new JPanel();
   }
 }

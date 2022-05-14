@@ -5,9 +5,9 @@ import javax.swing.BoxLayout;
 import java.awt.Dimension;
 import javax.swing.JButton;
 
-import com.alexis.common.component.*;
-import com.alexis.common.components.Components;
 import com.alexis.common.Utils;
+import com.alexis.common.Component.*;
+import com.alexis.common.Components.Components;
 
 public class Home extends Component {
   private JPanel panel;
