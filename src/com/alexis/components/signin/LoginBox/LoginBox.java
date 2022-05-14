@@ -6,6 +6,7 @@ import java.awt.font.TextAttribute;
 import java.util.Map;
 import java.util.HashMap;
 import java.awt.event.*;
+import javax.swing.event.*;
 
 import java.awt.Color;
 
@@ -16,6 +17,7 @@ import com.alexis.common.Components.Components;
 import com.alexis.common.LayoutBuilder.*;
 import com.alexis.common.RoundedPanel.RoundedPanel;
 import com.alexis.store.Store;
+import com.alexis.common.SimpleDocumentListener.*;
 
 public class LoginBox extends com.alexis.common.Component.Component {
   private JLabel cTitle;
@@ -25,8 +27,45 @@ public class LoginBox extends com.alexis.common.Component.Component {
   private JPasswordField pwdField;
   private JButton signinBtn;
   private JButton newABtn;
+  private String username;
+  private String password;
+  private boolean dontUpdateUsername;
+  private boolean dontUpdatePwd;
   private Components components;
   private LayoutBuilder layoutBuilder;
+
+  private void activateSigninButton(boolean isActivated) {
+    if (isActivated) {
+      this.signinBtn.setBackground(Color.BLUE);
+      this.signinBtn.setEnabled(true);
+    }
+    else {
+      this.signinBtn.setBackground(Color.GRAY);
+      this.signinBtn.setEnabled(false);
+    }
+  }
+
+  private void handleOnChangePasswordInput() {
+    System.out.println(this.pwdField.getPassword());
+
+    if (dontUpdatePwd == false) {
+      this.password = new String(this.pwdField.getPassword());
+      if (this.password.length() != 0 && this.username.length() != 0)
+        this.activateSigninButton(true);
+      else
+        this.activateSigninButton(false);
+    }
+  }
+
+  private void handleOnChangeNickNameInput() {
+    if (dontUpdateUsername == false) {
+      this.username = this.nickNameField.getText();
+      if (this.password.length() != 0 && this.username.length() != 0)
+        this.activateSigninButton(true);
+      else
+        this.activateSigninButton(false);
+    }
+  }
 
   private void initCreateAccountButton() {
     this.newABtn = new JButton("Click here to create an account");
@@ -43,7 +82,6 @@ public class LoginBox extends com.alexis.common.Component.Component {
     this.newABtn.setBorderPainted(false);
     this.newABtn.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        System.out.println("CLICK");
         Store.getInstance().getApp().getSigninFrame().changingToSignup();
       }
     });
@@ -56,8 +94,16 @@ public class LoginBox extends com.alexis.common.Component.Component {
         new Margin(40, 0, (int) LayoutHelper.getCenter(this.panel.getBounds().width, 0, 350, 0).getX(), 0));
     this.signinBtn.setBounds((int) location.getX(), (int) location.getY(), 350, 50);
     this.signinBtn.setFont(new Font("BlinkMacSystemFont", Font.PLAIN, 18));
-    this.signinBtn.setBackground(Color.BLUE);
+    this.signinBtn.setBackground(Color.GRAY);
     this.signinBtn.setForeground(Color.WHITE);
+    this.signinBtn.setEnabled(false);
+
+    this.signinBtn.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        System.out.println("SIGNIN !!");
+      }
+    });
+
     this.panel.add(this.signinBtn);
   }
 
@@ -69,9 +115,34 @@ public class LoginBox extends com.alexis.common.Component.Component {
     this.pwdField.setText("Password");
     this.pwdField.setForeground(new Color(171, 171, 171));
     this.pwdField.setFont(new Font("BlinkMacSystemFont", Font.PLAIN, 18));
+    this.pwdField.setEchoChar((char) 0);
     this.pwdField.setBorder(BorderFactory.createCompoundBorder(
         this.pwdField.getBorder(),
         BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+
+    this.pwdField.addFocusListener(new FocusListener() {
+      public void focusGained(FocusEvent fe) {
+        dontUpdatePwd = false;
+        pwdField.setEchoChar('*');
+        pwdField.setText(password);
+        pwdField.setForeground(Color.BLACK);
+      }
+
+      public void focusLost(FocusEvent fe) {
+        if (password.length() == 0) {
+          dontUpdatePwd = true;
+          pwdField.setEchoChar((char) 0);
+          pwdField.setText("Password");
+          pwdField.setForeground(new Color(171, 171, 171));
+        }
+      }
+    });
+    this.pwdField.getDocument().addDocumentListener(new SimpleDocumentListener() {
+      @Override
+      public void update(DocumentEvent e) {
+        handleOnChangePasswordInput();
+      }
+    });
     this.panel.add(this.pwdField);
   }
 
@@ -83,9 +154,32 @@ public class LoginBox extends com.alexis.common.Component.Component {
     this.nickNameField.setText("Username");
     this.nickNameField.setForeground(new Color(171, 171, 171));
     this.nickNameField.setFont(new Font("BlinkMacSystemFont", Font.PLAIN, 18));
+
     this.nickNameField.setBorder(BorderFactory.createCompoundBorder(
         this.nickNameField.getBorder(),
         BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+
+    this.nickNameField.addFocusListener(new FocusListener() {
+      public void focusGained(FocusEvent fe) {
+        dontUpdateUsername = false;
+        nickNameField.setText(username);
+        nickNameField.setForeground(Color.BLACK);
+      }
+
+      public void focusLost(FocusEvent fe) {
+        if (username.length() == 0) {
+          dontUpdateUsername = true;
+          nickNameField.setText("Username");
+          nickNameField.setForeground(new Color(171, 171, 171));
+        }
+      }
+    });
+    this.nickNameField.getDocument().addDocumentListener(new SimpleDocumentListener() {
+      @Override
+      public void update(DocumentEvent e) {
+        handleOnChangeNickNameInput();
+      }
+    });
     this.panel.add(this.nickNameField);
   }
 
@@ -114,15 +208,23 @@ public class LoginBox extends com.alexis.common.Component.Component {
     this.panel.add(this.cTitle);
   }
 
-  public LoginBox(String name, Components parent) {
-    super(name, parent);
+  public void initClassAttributes() {
     this.components = new Components(this);
+    this.username = "";
+    this.password = "";
+    this.dontUpdateUsername = false;
+    this.dontUpdatePwd = false;
     this.layoutBuilder = new LayoutBuilder(0, 0, LayoutBuilder.VERTICAL_ALIGN);
     this.panel = new LoginBoxPanel(30, Color.WHITE);
     this.panel.setLayout(null);
     this.panel.setBounds((Utils.SCREEN_WIDTH / 2) - (700 / 2), (Utils.SCREEN_HEIGHT / 2) - (550 / 2), 700, 550);
     this.panel.setOpaque(false);
     this.panel.setFocusable(true);
+  }
+
+  public LoginBox(String name, Components parent) {
+    super(name, parent);
+    this.initClassAttributes();
     this.initLogo();
     this.initTitle();
     this.initNickNameField();

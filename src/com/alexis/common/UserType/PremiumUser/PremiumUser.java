@@ -1,11 +1,12 @@
-package com.alexis.common.userType.standardUser;
+package com.alexis.common.UserType.PremiumUser;
 
 import java.util.ArrayList;
 
 import com.alexis.store.User;
 
-public class StandardUser extends User {
-  public StandardUser(String nickName,
+public class PremiumUser extends User {
+
+  public PremiumUser(String nickName,
       String password,
       String name,
       String surname,
@@ -14,6 +15,6 @@ public class StandardUser extends User {
       ArrayList<String> hobbies,
       String ppPath) {
     super(nickName, password, name, surname, age, email, hobbies, ppPath);
+    this.accountType = USER_TYPE.PREMIUM;
   }
-
 }

@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import com.alexis.common.Utils;
 import com.alexis.frames.*;
 import com.alexis.store.*;
+import com.alexis.db.*;
 
 public class App {
     private JFrame frame;
@@ -32,6 +33,7 @@ public class App {
     public App() {
         Store.getInstance();
         Store.getInstance().setApp(this);
+        InitDB.initUsers();
         displaySigninFrame();
     }
 
