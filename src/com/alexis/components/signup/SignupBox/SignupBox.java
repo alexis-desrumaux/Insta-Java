@@ -43,7 +43,6 @@ public class SignupBox extends com.alexis.common.Component.Component {
   private LayoutBuilder layoutBuilder;
 
   private void handleOnClickSignup() {
-    System.out.println("SIGNUP !!");
     User user = Store.getInstance().getOtherUsers().findUserByUsername(this.username);
     if (user != null) {
       Notification.addNotification(this.parent.getParent().getPanel(), "User " + this.username + " already exist", Color.BLACK, Color.YELLOW);
@@ -56,6 +55,7 @@ public class SignupBox extends com.alexis.common.Component.Component {
     UserSaveFileParser saveParser = new UserSaveFileParser(Utils.getSaveFilePathByUsername(this.username));
     saveParser.save(newUser);
     InitDB.addUserToUsernameList(this.username);
+    Store.getInstance().getApp().getSigninFrame().changingToInformations();
   }
 
   private void activateSignupButton(boolean isActivated) {

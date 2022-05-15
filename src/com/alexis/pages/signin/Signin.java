@@ -11,12 +11,10 @@ import com.alexis.components._global.Notification.*;
 
 public class Signin extends com.alexis.common.Component.Component {
   private Components components;
-  private boolean isLogged;
 
   public Signin(String name, Components parent) {
     super(name, parent);
     this.components = new Components(this);
-    this.isLogged = false;
     this.panel = new SigninPanel();
     this.panel.setPreferredSize(new Dimension(Utils.SCREEN_WIDTH, Utils.SCREEN_HEIGHT));
     this.panel.setFocusable(true);

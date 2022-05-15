@@ -5,6 +5,8 @@ import javax.swing.JPanel;
 
 import com.alexis.pages.signin.*;
 import com.alexis.pages.signup.Signup;
+import com.alexis.pages.signup.informations.*;
+import com.alexis.pages.signup.picture.Picture;
 import com.alexis.store.Store;
 import com.alexis.common.Utils;
 import com.alexis.common.Component.*;
@@ -14,6 +16,32 @@ public class SigninFrame {
   private JFrame frame;
   private JPanel main;
   private Component component;
+
+  public void changingToPicture() {
+    if (this.component.getName() == "Informations") {
+      this.component = new Picture("Picture", null);
+      this.main = this.component.getPanel();
+      this.frame.setTitle("Picture - SKOC");
+      this.frame.getContentPane().removeAll();
+      this.frame.getContentPane().add(this.main);
+      this.frame.revalidate();
+      this.frame.pack(); // 
+      System.out.println("Picture !");
+    }
+  }
+
+  public void changingToInformations() {
+    if (this.component.getName() == "Signup") {
+      this.component = new Informations("Informations", null);
+      this.main = this.component.getPanel();
+      this.frame.setTitle("Informations - SKOC");
+      this.frame.getContentPane().removeAll();
+      this.frame.getContentPane().add(this.main);
+      this.frame.revalidate();
+      this.frame.pack(); // 
+      System.out.println("Informations !");
+    }
+  }
 
   public void changingToSignin() {
     if (this.component.getName() == "Signup") {

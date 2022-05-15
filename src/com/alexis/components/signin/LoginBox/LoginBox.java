@@ -42,7 +42,8 @@ public class LoginBox extends com.alexis.common.Component.Component {
       Notification.addNotification(parent.getParent().getPanel(), "This user doesn't exist", Color.WHITE, Color.RED);
     } else {
       if (user.getPassword().equals(this.password)) {
-        Notification.addNotification(parent.getParent().getPanel(), "OK", Color.WHITE, Color.GREEN);
+        Store.getInstance().getApp().displayMainFrame();
+        //Notification.addNotification(parent.getParent().getPanel(), "OK", Color.WHITE, Color.GREEN);
       } else {
         Notification.addNotification(parent.getParent().getPanel(), "Incorrect password", Color.WHITE, Color.RED);
       }

@@ -9,12 +9,10 @@ import com.alexis.components.signup.SignupBox.*;
 
 public class Signup extends com.alexis.common.Component.Component {
   private Components components;
-  private boolean isLogged;
 
   public Signup(String name, Components parent) {
     super(name, parent);
     this.components = new Components(this);
-    this.isLogged = false;
     this.panel = new SignupPanel();
     this.panel.setPreferredSize(new Dimension(Utils.SCREEN_WIDTH, Utils.SCREEN_HEIGHT));
     this.panel.setFocusable(true);
