@@ -12,15 +12,13 @@ import java.awt.Color;
 
 import com.alexis.common.LayoutHelper.*;
 import com.alexis.common.Utils;
-import com.alexis.common.Component.*;
-import com.alexis.common.Components.Components;
 import com.alexis.common.LayoutBuilder.*;
-import com.alexis.common.RoundedPanel.RoundedPanel;
 import com.alexis.store.Store;
 import com.alexis.common.SimpleDocumentListener.*;
 import com.alexis.common.UserSaveFileParser.UserSaveFileParser;
 import com.alexis.common.UserType.StandardUser.StandardUser;
 import com.alexis.components._global.Notification.Notification;
+import com.alexis.components.signup.SignupBox.Props;
 import com.alexis.db.InitDB;
 import com.alexis.store.User;
 
@@ -39,13 +37,12 @@ public class SignupBox extends com.alexis.common.Component.Component {
   private boolean dontUpdateEmail;
   private boolean dontUpdateUsername;
   private boolean dontUpdatePwd;
-  private Components components;
   private LayoutBuilder layoutBuilder;
 
   private void handleOnClickSignup() {
     User user = Store.getInstance().getOtherUsers().findUserByUsername(this.username);
     if (user != null) {
-      Notification.addNotification(this.parent.getParent().getPanel(), "User " + this.username + " already exist", Color.BLACK, Color.YELLOW);
+      Notification.addNotification(this.parent, "User " + this.username + " already exist", Color.BLACK, Color.YELLOW);
       return;
     }
     ArrayList<String> hobbies = new ArrayList<String>();
@@ -102,7 +99,7 @@ public class SignupBox extends com.alexis.common.Component.Component {
   private void initSigninButton() {
     this.signinBtn = new JButton("Click here to log in");
     Point location = layoutBuilder.next(350, 16,
-        new Margin(20, 0, (int) LayoutHelper.getCenter(this.panel.getBounds().width, 0, 350, 0).getX(), 0));
+        new Margin(20, 0, (int) LayoutHelper.getCenter(this.getBounds().width, 0, 350, 0).getX(), 0));
     this.signinBtn.setBounds((int) location.getX(), (int) location.getY(), 350, 16);
     Map<TextAttribute, Integer> fontAttributes = new HashMap<TextAttribute, Integer>();
     fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
@@ -118,13 +115,13 @@ public class SignupBox extends com.alexis.common.Component.Component {
         Store.getInstance().getApp().getSigninFrame().changingToSignin();
       }
     });
-    this.panel.add(this.signinBtn);
+    this.add(this.signinBtn);
   }
 
   private void initSignupButton() {
     this.signupBtn = new JButton("Sign up");
     Point location = layoutBuilder.next(350, 50,
-        new Margin(40, 0, (int) LayoutHelper.getCenter(this.panel.getBounds().width, 0, 350, 0).getX(), 0));
+        new Margin(40, 0, (int) LayoutHelper.getCenter(this.getBounds().width, 0, 350, 0).getX(), 0));
     this.signupBtn.setBounds((int) location.getX(), (int) location.getY(), 350, 50);
     this.signupBtn.setFont(new Font("BlinkMacSystemFont", Font.PLAIN, 18));
     this.signupBtn.setBackground(Color.GRAY);
@@ -137,13 +134,13 @@ public class SignupBox extends com.alexis.common.Component.Component {
       }
     });
 
-    this.panel.add(this.signupBtn);
+    this.add(this.signupBtn);
   }
 
   private void initPwdField() {
     this.pwdField = new JPasswordField();
     Point pField = layoutBuilder.next(350, 50,
-        new Margin(40, 0, (int) LayoutHelper.getCenter(this.panel.getBounds().width, 0, 350, 0).getX(), 0));
+        new Margin(40, 0, (int) LayoutHelper.getCenter(this.getBounds().width, 0, 350, 0).getX(), 0));
     this.pwdField.setBounds((int) pField.getX(), (int) pField.getY(), 350, 50);
     this.pwdField.setText("Password");
     this.pwdField.setForeground(new Color(171, 171, 171));
@@ -175,13 +172,13 @@ public class SignupBox extends com.alexis.common.Component.Component {
         handleOnChangePasswordInput();
       }
     });
-    this.panel.add(this.pwdField);
+    this.add(this.pwdField);
   }
 
   private void initUsernameField() {
     this.usernameField = new JTextField();
     Point uField = layoutBuilder.next(350, 50,
-        new Margin(40, 0, (int) LayoutHelper.getCenter(this.panel.getBounds().width, 0, 350, 0).getX(), 0));
+        new Margin(40, 0, (int) LayoutHelper.getCenter(this.getBounds().width, 0, 350, 0).getX(), 0));
     this.usernameField.setBounds((int) uField.getX(), (int) uField.getY(), 350, 50);
     this.usernameField.setText("Username");
     this.usernameField.setForeground(new Color(171, 171, 171));
@@ -211,14 +208,14 @@ public class SignupBox extends com.alexis.common.Component.Component {
         handleOnChangeUsernameInput();
       }
     });
-    this.panel.add(this.usernameField);
+    this.add(this.usernameField);
 
   }
 
   private void initEmailField() {
     this.emailField = new JTextField();
     Point eField = layoutBuilder.next(350, 50,
-        new Margin(40, 0, (int) LayoutHelper.getCenter(this.panel.getBounds().width, 0, 350, 0).getX(), 0));
+        new Margin(40, 0, (int) LayoutHelper.getCenter(this.getBounds().width, 0, 350, 0).getX(), 0));
     this.emailField.setBounds((int) eField.getX(), (int) eField.getY(), 350, 50);
     this.emailField.setText("E-mail");
     this.emailField.setForeground(new Color(171, 171, 171));
@@ -249,7 +246,7 @@ public class SignupBox extends com.alexis.common.Component.Component {
       }
     });
 
-    this.panel.add(this.emailField);
+    this.add(this.emailField);
   }
 
   private void initLogo() {
@@ -258,7 +255,7 @@ public class SignupBox extends com.alexis.common.Component.Component {
       this.logo = ii.getImage();
       this.logo = this.logo.getScaledInstance(341, 100, Image.SCALE_SMOOTH);
       this.logoPos = layoutBuilder.next(341, 100,
-          new Margin(20, 0, (int) LayoutHelper.getCenter(this.panel.getBounds().width, 0, 341, 0).getX(), 0));
+          new Margin(20, 0, (int) LayoutHelper.getCenter(this.getBounds().width, 0, 341, 0).getX(), 0));
 
     } catch (Exception e) {
       System.out.println(e);
@@ -272,20 +269,17 @@ public class SignupBox extends com.alexis.common.Component.Component {
     Font f = this.cTitle.getFont();
     this.cTitle.setFont(f.deriveFont(f.getStyle() | Font.BOLD));
     Point cTitlePos = layoutBuilder.next(320, 30,
-        new Margin(20, 0, (int) LayoutHelper.getCenter(this.panel.getBounds().width, 0, 320, 0).getX(), 0));
+        new Margin(20, 0, (int) LayoutHelper.getCenter(this.getBounds().width, 0, 320, 0).getX(), 0));
     this.cTitle.setBounds((int) cTitlePos.getX(), (int) cTitlePos.getY(), 320, 30);
-    this.panel.add(this.cTitle);
+    this.add(this.cTitle);
   }
 
-  private void initClassAttributes() {
-    this.components = new Components(this);
+  private void initClassAttributes(Props props) {
     this.layoutBuilder = new LayoutBuilder(0, 0, LayoutBuilder.VERTICAL_ALIGN);
-    this.panel = new SignupBoxPanel(30, Color.WHITE);
-    this.panel.setLayout(null);
-    this.panel.setBounds((Utils.SCREEN_WIDTH / 2) - (700 / 2), (Utils.SCREEN_HEIGHT / 2) - (600 / 2), 700, 600);
-    this.panel.setOpaque(false);
-    this.panel.setFocusable(true);
-
+    this.setLayout(null);
+    this.setOpaque(false);
+    this.setFocusable(true);
+    this.setBounds((int)props.position.getX(), (int)props.position.getY(), 700, 600);
     this.email = "";
     this.username = "";
     this.password = "";
@@ -293,10 +287,17 @@ public class SignupBox extends com.alexis.common.Component.Component {
     this.dontUpdateUsername = false;
     this.dontUpdatePwd = false;
   }
+  
+  @Override
+  protected void paintComponent(Graphics g) {
+    super.paintComponent(g);
+    Graphics2D g2D = (Graphics2D) g;
+    g2D.drawImage(logo, (int) logoPos.getX(), (int) logoPos.getY(), this);
+  }
 
-  public SignupBox(String name, Components parent) {
-    super(name, parent);
-    this.initClassAttributes();
+  public SignupBox(String name, com.alexis.common.Component.Component parent, Props props) {
+    super(name, parent, 30, Color.WHITE);
+    this.initClassAttributes(props);
     this.initLogo();
     this.initTitle();
     this.initEmailField();
@@ -305,23 +306,4 @@ public class SignupBox extends com.alexis.common.Component.Component {
     this.initSignupButton();
     this.initSigninButton();
   }
-
-  class SignupBoxPanel extends RoundedPanel {
-
-    @Override
-    protected void paintComponent(Graphics g) {
-      super.paintComponent(g);
-      Graphics2D g2D = (Graphics2D) g;
-      g2D.drawImage(logo, (int) logoPos.getX(), (int) logoPos.getY(), this);
-    }
-
-    public SignupBoxPanel(int radius, Color bgColor) {
-      super(radius, bgColor);
-    }
-
-    public SignupBoxPanel(int radius) {
-      super(radius);
-    }
-  }
-
 }

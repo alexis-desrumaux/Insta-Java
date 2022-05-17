@@ -25,7 +25,7 @@ public class MainFrame {
     this.frame.requestFocus();
     this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.home = new Home("Home", null);
-    this.main = this.home.getPanel();
+    this.main = this.home;
     this.frame.add(this.main);
     this.frame.pack();
     this.frame.setVisible(true);

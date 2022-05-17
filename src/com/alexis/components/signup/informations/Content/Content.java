@@ -8,13 +8,11 @@ import javax.swing.event.*;
 import java.util.ArrayList;
 
 import com.alexis.common.Utils;
-import com.alexis.common.Components.Components;
 import com.alexis.common.LayoutBuilder.*;
 import com.alexis.common.LayoutHelper.*;
 import com.alexis.store.Store;
 import com.alexis.common.SimpleDocumentListener.*;
 import com.alexis.store.*;
-import com.alexis.db.InitDB;
 import com.alexis.common.UserSaveFileParser.UserSaveFileParser;
 
 public class Content extends com.alexis.common.Component.Component {
@@ -35,7 +33,6 @@ public class Content extends com.alexis.common.Component.Component {
   private int age;
   private boolean dontUpdateName;
   private boolean dontUpdateSurname;
-  private Components components;
   private LayoutBuilder layoutBuilder;
 
   private void handleOnClickNextButton() {
@@ -128,7 +125,7 @@ public class Content extends com.alexis.common.Component.Component {
     Point pos = layoutBuilder.next(0, 0);
     layoutBuilder.setPosition(new Point(0, pos.y));
     Point location = layoutBuilder.next(350, 50,
-        new Margin(40, 0, (int) LayoutHelper.getCenter(this.panel.getBounds().width, 0, 350, 0).getX(), 0));
+        new Margin(40, 0, (int) LayoutHelper.getCenter(this.getBounds().width, 0, 350, 0).getX(), 0));
     this.nextBtn.setBounds((int) location.getX(), (int) location.getY(), 350, 50);
     this.nextBtn.setFont(new Font("BlinkMacSystemFont", Font.PLAIN, 18));
     this.nextBtn.setBackground(Color.GRAY);
@@ -141,7 +138,7 @@ public class Content extends com.alexis.common.Component.Component {
       }
     });
 
-    this.panel.add(this.nextBtn);
+    this.add(this.nextBtn);
   }
 
   private void initAgeSelector() {
@@ -169,7 +166,7 @@ public class Content extends com.alexis.common.Component.Component {
         }
       }
     });
-    this.panel.add(this.cAge);
+    this.add(this.cAge);
   }
 
   private void initAgeTitle() {
@@ -182,11 +179,11 @@ public class Content extends com.alexis.common.Component.Component {
     Point pos = layoutBuilder.next(0, 0);
     layoutBuilder.setPosition(new Point(0, pos.y));
     pos = layoutBuilder.next(width, height,
-        new Margin(40, 0, (int) LayoutHelper.getCenter(this.panel.getWidth(), 0, 320, 0).getX(), 0));
+        new Margin(40, 0, (int) LayoutHelper.getCenter(this.getWidth(), 0, 320, 0).getX(), 0));
     this.ageTitle.setBounds((int) pos.getX(), (int) pos.getY(), width, height);
     // this.hobbiesTitle.setBackground(Color.YELLOW);
     // this.hobbiesTitle.setOpaque(true);
-    this.panel.add(this.ageTitle);
+    this.add(this.ageTitle);
   }
 
   private void initHobbies() {
@@ -198,7 +195,7 @@ public class Content extends com.alexis.common.Component.Component {
     int height = 50;
     layoutBuilder.changeAlign(LayoutBuilder.HORIZONTAL_ALIGN);
     Point pos = layoutBuilder.next(width, height,
-        new Margin(40, 0, (int) LayoutHelper.getCenter(this.panel.getWidth(), 0, 420, 0).getX(), 0));
+        new Margin(40, 0, (int) LayoutHelper.getCenter(this.getWidth(), 0, 420, 0).getX(), 0));
     this.c1.setBounds((int) pos.getX(), (int) pos.getY(), width, height);
     layoutBuilder.changeAlign(LayoutBuilder.VERTICAL_ALIGN);
     Point pos2 = layoutBuilder.next(width, height,
@@ -226,8 +223,8 @@ public class Content extends com.alexis.common.Component.Component {
         }
       }
     });
-    this.panel.add(c1);
-    this.panel.add(c2);
+    this.add(c1);
+    this.add(c2);
   }
 
   private void initHobbiesLabel() {
@@ -237,11 +234,11 @@ public class Content extends com.alexis.common.Component.Component {
     int width = 100;
     int height = 20;
     Point pos = layoutBuilder.next(width, height,
-        new Margin(30, 0, LayoutHelper.getCenter(this.panel.getWidth(), this.panel.getHeight(), width, height).x, 0));
+        new Margin(30, 0, LayoutHelper.getCenter(this.getWidth(), this.getHeight(), width, height).x, 0));
     this.hobbiesTitle.setBounds((int) pos.getX(), (int) pos.getY(), width, height);
     // this.hobbiesTitle.setBackground(Color.YELLOW);
     // this.hobbiesTitle.setOpaque(true);
-    this.panel.add(this.hobbiesTitle);
+    this.add(this.hobbiesTitle);
   }
 
   private void initSurname() {
@@ -249,7 +246,7 @@ public class Content extends com.alexis.common.Component.Component {
     int width = 400;
     int height = 50;
     Point pos = layoutBuilder.next(width, height,
-        new Margin(40, 0, (int) LayoutHelper.getCenter(this.panel.getBounds().width, 0, width, 0).getX(), 0));
+        new Margin(40, 0, (int) LayoutHelper.getCenter(this.getBounds().width, 0, width, 0).getX(), 0));
     this.surnameField.setBounds((int) pos.getX(), (int) pos.getY(), width, height);
     this.surnameField.setText("Surname");
     this.surnameField.setForeground(new Color(171, 171, 171));
@@ -280,7 +277,7 @@ public class Content extends com.alexis.common.Component.Component {
       }
     });
 
-    this.panel.add(this.surnameField);
+    this.add(this.surnameField);
   }
 
   private void initName() {
@@ -288,7 +285,7 @@ public class Content extends com.alexis.common.Component.Component {
     int width = 400;
     int height = 50;
     Point pos = layoutBuilder.next(width, height,
-        new Margin(40, 0, (int) LayoutHelper.getCenter(this.panel.getBounds().width, 0, width, 0).getX(), 0));
+        new Margin(40, 0, (int) LayoutHelper.getCenter(this.getBounds().width, 0, width, 0).getX(), 0));
     this.nameField.setBounds((int) pos.getX(), (int) pos.getY(), width, height);
     this.nameField.setText("Name");
     this.nameField.setForeground(new Color(171, 171, 171));
@@ -319,7 +316,7 @@ public class Content extends com.alexis.common.Component.Component {
       }
     });
 
-    this.panel.add(this.nameField);
+    this.add(this.nameField);
   }
 
   private void initMessage() {
@@ -329,11 +326,11 @@ public class Content extends com.alexis.common.Component.Component {
     int width = 335;
     int height = 20;
     Point pos = layoutBuilder.next(width, height,
-        new Margin(30, 0, LayoutHelper.getCenter(this.panel.getWidth(), this.panel.getHeight(), width, height).x, 0));
+        new Margin(30, 0, LayoutHelper.getCenter(this.getWidth(), this.getHeight(), width, height).x, 0));
     this.message.setBounds((int) pos.getX(), (int) pos.getY(), width, height);
     // this.message.setBackground(Color.YELLOW);
     // this.message.setOpaque(true);
-    this.panel.add(this.message);
+    this.add(this.message);
   }
 
   private void initWelcome() {
@@ -343,11 +340,10 @@ public class Content extends com.alexis.common.Component.Component {
     this.welcome.setFont(f.deriveFont(f.getStyle() | Font.BOLD));
     this.welcome.setBounds(0, 0, 0, 30);
     layoutBuilder.next(0, 30, new Margin(30, 0, 0, 0));
-    this.panel.add(this.welcome);
+    this.add(this.welcome);
   }
 
-  private void initClassAttributes(Point pos) {
-    this.components = new Components(this);
+  private void initClassAttributes(Props props) {
     this.layoutBuilder = new LayoutBuilder(0, 0, LayoutBuilder.VERTICAL_ALIGN);
     this.name = "";
     this.surname = "";
@@ -356,17 +352,33 @@ public class Content extends com.alexis.common.Component.Component {
     this.hobbie2 = "Cars";
     this.dontUpdateName = false;
     this.dontUpdateSurname = false;
-    this.panel = new ContentPanel();
-    this.panel.setBounds((int) pos.getX(), (int) pos.getY(), Utils.SCREEN_WIDTH, Utils.SCREEN_HEIGHT - 130);
-    this.panel.setFocusable(true);
-    this.panel.setLayout(null);
-    this.panel.setBackground(Color.WHITE);
-    this.panel.setOpaque(true);
+    this.setFocusable(true);
+    this.setLayout(null);
+    this.setBounds((int) props.position.getX(), (int) props.position.getY(), Utils.SCREEN_WIDTH,
+        Utils.SCREEN_HEIGHT - 130);
+    this.setBackground(Color.WHITE);
+    this.setOpaque(true);
   }
 
-  public Content(String name, Components parent, Point pos) {
+  private void setPositionWelcome(Graphics g) {
+    int width = g.getFontMetrics(welcome.getFont()).stringWidth(welcome.getText());
+    int height = welcome.getBounds().height;
+    LayoutBuilder b = new LayoutBuilder(0, 0, LayoutBuilder.VERTICAL_ALIGN);
+    Point pos = b.next(width, height,
+        new Margin(30, 0, LayoutHelper.getCenter(getWidth(), getHeight(), width, height).x, 0));
+
+    welcome.setBounds((int) pos.getX(), (int) pos.getY(), width, height);
+  }
+
+  @Override
+  protected void paintComponent(Graphics g) {
+    super.paintComponent(g);
+    this.setPositionWelcome(g);
+  }
+
+  public Content(String name, com.alexis.common.Component.Component parent, Props props) {
     super(name, parent);
-    this.initClassAttributes(pos);
+    this.initClassAttributes(props);
     this.initWelcome();
     this.initMessage();
     this.initName();
@@ -376,24 +388,5 @@ public class Content extends com.alexis.common.Component.Component {
     this.initAgeTitle();
     this.initAgeSelector();
     this.initNextButton();
-  }
-
-  public class ContentPanel extends JPanel {
-
-    private void setPositionWelcome(Graphics g) {
-      int width = g.getFontMetrics(welcome.getFont()).stringWidth(welcome.getText());
-      int height = welcome.getBounds().height;
-      LayoutBuilder b = new LayoutBuilder(0, 0, LayoutBuilder.VERTICAL_ALIGN);
-      Point pos = b.next(width, height,
-          new Margin(30, 0, LayoutHelper.getCenter(getWidth(), getHeight(), width, height).x, 0));
-
-      welcome.setBounds((int) pos.getX(), (int) pos.getY(), width, height);
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-      super.paintComponent(g);
-      this.setPositionWelcome(g);
-    }
   }
 }

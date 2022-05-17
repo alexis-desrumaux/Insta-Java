@@ -6,25 +6,14 @@ import java.awt.Dimension;
 import javax.swing.JButton;
 
 import com.alexis.common.Utils;
-import com.alexis.common.Component.*;
-import com.alexis.common.Components.Components;
 
-public class Home extends Component {
-  private JPanel panel;
-  private Components components;
-
-  public JPanel getPanel() {
-    return this.panel;
-  }
-
-  public Home(String name, Components parent) {
+public class Home extends com.alexis.common.Component.Component {
+  public Home(String name, com.alexis.common.Component.Component parent) {
     super(name, parent);
-    this.components = new Components(this);
-    this.panel = new JPanel();
-    this.panel.setPreferredSize(new Dimension(Utils.SCREEN_WIDTH, Utils.SCREEN_HEIGHT));
-    this.panel.setFocusable(true);
-    this.panel.setLayout(new BoxLayout(this.panel, BoxLayout.Y_AXIS));
+    this.setPreferredSize(new Dimension(Utils.SCREEN_WIDTH, Utils.SCREEN_HEIGHT));
+    this.setFocusable(true);
+    this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     JButton btn = new JButton("Je suis un boutton !");
-    this.panel.add(btn);
+    this.add(btn);
   }
 }

@@ -8,7 +8,6 @@ import javax.swing.event.*;
 import java.util.ArrayList;
 
 import com.alexis.common.Utils;
-import com.alexis.common.Components.Components;
 import com.alexis.common.LayoutBuilder.*;
 import com.alexis.common.LayoutHelper.*;
 import com.alexis.store.Store;
@@ -31,7 +30,6 @@ public class Content extends com.alexis.common.Component.Component {
   private String ppPath;
   private JButton browseBtn;
   private JButton nextBtn;
-  private Components components;
   private LayoutBuilder layoutBuilder;
 
   private void reinitPP() {
@@ -69,7 +67,7 @@ public class Content extends com.alexis.common.Component.Component {
         Files.copy(orginalFile.toPath(), newFilePath.toPath());
         this.ppPath = newFilePath.toPath().toString();
         this.reinitPP();
-        this.panel.repaint();
+        this.repaint();
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -82,7 +80,7 @@ public class Content extends com.alexis.common.Component.Component {
     Point pos = layoutBuilder.next(0, 0);
     layoutBuilder.setPosition(new Point(0, pos.y));
     Point location = layoutBuilder.next(450, 50,
-        new Margin(60, 0, (int) LayoutHelper.getCenter(this.panel.getBounds().width, 0, 450, 0).getX(), 0));
+        new Margin(60, 0, (int) LayoutHelper.getCenter(this.getBounds().width, 0, 450, 0).getX(), 0));
     this.nextBtn.setBounds((int) location.getX(), (int) location.getY(), 450, 50);
     this.nextBtn.setFont(new Font("BlinkMacSystemFont", Font.PLAIN, 18));
     this.nextBtn.setBackground(Color.BLUE);
@@ -94,7 +92,7 @@ public class Content extends com.alexis.common.Component.Component {
         handleOnClickNextButton();
       }
     });
-    this.panel.add(this.nextBtn);
+    this.add(this.nextBtn);
   }
 
   private void initBrowseButton() {
@@ -102,7 +100,7 @@ public class Content extends com.alexis.common.Component.Component {
     Point pos = layoutBuilder.next(0, 0);
     layoutBuilder.setPosition(new Point(0, pos.y));
     Point location = layoutBuilder.next(350, 50,
-        new Margin(40, 0, (int) LayoutHelper.getCenter(this.panel.getBounds().width, 0, 350, 0).getX(), 0));
+        new Margin(40, 0, (int) LayoutHelper.getCenter(this.getBounds().width, 0, 350, 0).getX(), 0));
     this.browseBtn.setBounds((int) location.getX(), (int) location.getY(), 350, 50);
     this.browseBtn.setFont(new Font("BlinkMacSystemFont", Font.PLAIN, 18));
     this.browseBtn.setBackground(Color.GRAY);
@@ -114,7 +112,7 @@ public class Content extends com.alexis.common.Component.Component {
         handleOnClickBrowseButton();
       }
     });
-    this.panel.add(this.browseBtn);
+    this.add(this.browseBtn);
   }
 
   private void initMessage() {
@@ -125,11 +123,11 @@ public class Content extends com.alexis.common.Component.Component {
     int width = 350;
     int height = 32;
     Point pos = layoutBuilder.next(width, height,
-        new Margin(30, 0, LayoutHelper.getCenter(this.panel.getWidth(), this.panel.getHeight(), width, height).x, 0));
+        new Margin(30, 0, LayoutHelper.getCenter(this.getWidth(), this.getHeight(), width, height).x, 0));
     this.message.setBounds((int) pos.getX(), (int) pos.getY(), width, height);
     //this.message.setBackground(Color.YELLOW);
     //this.message.setOpaque(true);
-    this.panel.add(this.message);
+    this.add(this.message);
   }
 
   private void initPP() {
@@ -138,44 +136,36 @@ public class Content extends com.alexis.common.Component.Component {
       this.pp = ii.getImage();
       this.pp = this.pp.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
       this.ppPos = layoutBuilder.next(200, 200,
-          new Margin(20, 0, (int) LayoutHelper.getCenter(this.panel.getBounds().width, 0, 200, 0).getX(), 0));
+          new Margin(20, 0, (int) LayoutHelper.getCenter(this.getBounds().width, 0, 200, 0).getX(), 0));
 
     } catch (Exception e) {
       System.out.println(e);
     }
   }
 
-  private void initClassAttributes(Point pos) {
-    this.components = new Components(this);
+  private void initClassAttributes(Props props) {
     this.layoutBuilder = new LayoutBuilder(0, 0, LayoutBuilder.VERTICAL_ALIGN);
-    this.panel = new ContentPanel();
-    this.panel.setBounds((int) pos.getX(), (int) pos.getY(), Utils.SCREEN_WIDTH, Utils.SCREEN_HEIGHT - 130);
-    this.panel.setFocusable(true);
-    this.panel.setLayout(null);
-    this.panel.setBackground(Color.WHITE);
-    this.panel.setOpaque(true);
+    this.setFocusable(true);
+    this.setLayout(null);
+    this.setBounds((int) props.position.getX(), (int) props.position.getY(), Utils.SCREEN_WIDTH, Utils.SCREEN_HEIGHT - 130);
+    this.setBackground(Color.WHITE);
+    this.setOpaque(true);
     this.ppPath = "src/com/alexis/assets/defaultPP.png";
   }
 
-  public Content(String name, Components parent, Point pos) {
+  @Override
+  protected void paintComponent(Graphics g) {
+    super.paintComponent(g);
+    Graphics2D g2D = (Graphics2D) g;
+    g2D.drawImage(pp, (int) ppPos.getX(), (int) ppPos.getY(), this);
+  }
+  
+  public Content(String name, com.alexis.common.Component.Component parent, Props props) {
     super(name, parent);
-    this.initClassAttributes(pos);
+    this.initClassAttributes(props);
     this.initPP();
     this.initMessage();
     this.initBrowseButton();
     this.initNextButton();
-  }
-
-  public class ContentPanel extends JPanel {
-    @Override
-    protected void paintComponent(Graphics g) {
-      super.paintComponent(g);
-      Graphics2D g2D = (Graphics2D) g;
-      // GradientPaint gradient = new GradientPaint(0, 0, Color.BLUE, 900, 130,
-      // Color.RED);
-      // g2D.setPaint(gradient);
-      // g2D.fillRect(0, 0, getWidth(), getHeight());
-      g2D.drawImage(pp, (int) ppPos.getX(), (int) ppPos.getY(), this);
-    }
   }
 }

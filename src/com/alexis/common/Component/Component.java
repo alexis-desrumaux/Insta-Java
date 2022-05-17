@@ -1,23 +1,22 @@
 package com.alexis.common.Component;
 
-import javax.swing.JPanel;
+import com.alexis.common.CustomJPanel.*;
+import java.awt.Color;
 
-import com.alexis.common.Components.*;
-
-public abstract class Component {
+public abstract class Component extends CustomJPanel {
   protected String name;
-  protected Components parent;
-  protected JPanel panel;
+  protected Component parent;
+  //protected JPanel panel;
 
-  public void setPanel(JPanel j) {
+  /*public void setPanel(JPanel j) {
     this.panel = j;
   }
 
   public JPanel getPanel() {
     return this.panel;
-  }
+  }*/
 
-  public Components getParent() {
+  public Component getParentComponent() {
     return this.parent;
   }
 
@@ -31,9 +30,21 @@ public abstract class Component {
     return this.name;
   }
 
-  public Component(String name, Components parent) {
+  public Component(String name, Component parent, int radius, Color bgColor) {
+    super(radius, bgColor);
     this.name = name;
     this.parent = parent;
-    this.panel = new JPanel();
+  }
+
+  public Component(String name, Component parent, int radius) {
+    super(radius);
+    this.name = name;
+    this.parent = parent;
+  }
+
+  public Component(String name, Component parent) {
+    super(0);
+    this.name = name;
+    this.parent = parent;
   }
 }

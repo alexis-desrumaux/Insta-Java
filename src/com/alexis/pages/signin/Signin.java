@@ -1,32 +1,16 @@
 package com.alexis.pages.signin;
 
-import javax.swing.JPanel;
 import java.awt.*;
 
 import com.alexis.components.signin.LoginBox.LoginBox;
 import com.alexis.store.Store;
 import com.alexis.common.Utils;
-import com.alexis.common.Components.Components;
 import com.alexis.components._global.Notification.*;
 
 public class Signin extends com.alexis.common.Component.Component {
-  private Components components;
+  private LoginBox loginBox;
 
-  public Signin(String name, Components parent) {
-    super(name, parent);
-    this.components = new Components(this);
-    this.panel = new SigninPanel();
-    this.panel.setPreferredSize(new Dimension(Utils.SCREEN_WIDTH, Utils.SCREEN_HEIGHT));
-    this.panel.setFocusable(true);
-    this.panel.setLayout(null);
-    this.components.grabComponents().add(new LoginBox("LoginBox", this.components));
-    for (com.alexis.common.Component.Component c : this.components.grabComponents()) {
-      this.panel.add(c.getPanel());
-    }
-  }
-
-  public class SigninPanel extends JPanel {
-    @Override
+  @Override
     protected void paintComponent(Graphics g) {
       super.paintComponent(g);
       Graphics2D g2D = (Graphics2D) g;
@@ -34,5 +18,13 @@ public class Signin extends com.alexis.common.Component.Component {
       g2D.setPaint(gradient);
       g2D.fillRect(0, 0, getWidth(), getHeight());
     }
+
+  public Signin(String name, com.alexis.common.Component.Component parent) {
+    super(name, parent);
+    this.setPreferredSize(new Dimension(Utils.SCREEN_WIDTH, Utils.SCREEN_HEIGHT));
+    this.setFocusable(true);
+    this.setLayout(null);
+    this.loginBox = new LoginBox("LoginBox", this);
+    this.add(this.loginBox);
   }
 }

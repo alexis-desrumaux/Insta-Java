@@ -1,9 +1,9 @@
-package com.alexis.common.RoundedPanel;
+package com.alexis.common.CustomJPanel;
 
 import java.awt.*;
 import javax.swing.*;
 
-public class RoundedPanel extends JPanel {
+public class CustomJPanel extends JPanel {
   private Color backgroundColor;
   private int cornerRadius = 15;
 
@@ -13,12 +13,12 @@ public class RoundedPanel extends JPanel {
     repaint();
   }
 
-  public RoundedPanel(int radius) {
+  public CustomJPanel(int radius) {
     super();
     cornerRadius = radius;
   }
 
-  public RoundedPanel(int radius, Color bgColor) {
+  public CustomJPanel(int radius, Color bgColor) {
     super();
     cornerRadius = radius;
     backgroundColor = bgColor;
