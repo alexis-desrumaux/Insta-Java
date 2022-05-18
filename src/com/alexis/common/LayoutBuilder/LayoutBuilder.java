@@ -11,6 +11,12 @@ public class LayoutBuilder {
   public static final int VERTICAL_ALIGN = 0;
   public static final int HORIZONTAL_ALIGN = 1;
 
+  public void reset(int ALIGN) {
+    this.pos.x = 0;
+    this.pos.y = 0;
+    this.align = ALIGN;
+  }
+
   public void setPosition(Point p) {
     this.pos = p;
   }

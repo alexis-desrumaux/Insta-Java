@@ -3,6 +3,7 @@ package com.alexis.pages.signup;
 import java.awt.*;
 
 import com.alexis.common.Utils;
+import com.alexis.common.ComponentProps.ComponentProps;
 import com.alexis.components.signup.SignupBox.*;
 
 public class Signup extends com.alexis.common.Component.Component {
@@ -16,13 +17,15 @@ public class Signup extends com.alexis.common.Component.Component {
     g2D.fillRect(0, 0, getWidth(), getHeight());
   }
 
+  public void updateProps(ComponentProps props) {};
+
   public Signup(String name, com.alexis.common.Component.Component parent) {
     super(name, parent);
     this.setPreferredSize(new Dimension(Utils.SCREEN_WIDTH, Utils.SCREEN_HEIGHT));
     this.setFocusable(true);
     this.setLayout(null);
     SignupBox signupBox = new SignupBox("SignupBox", this,
-        new Props(new Point((Utils.SCREEN_WIDTH / 2) - (700 / 2), (Utils.SCREEN_HEIGHT / 2) - (600 / 2))));
+        new SignupBoxProps(new Point((Utils.SCREEN_WIDTH / 2) - (700 / 2), (Utils.SCREEN_HEIGHT / 2) - (600 / 2))));
     this.add(signupBox);
   }
 }

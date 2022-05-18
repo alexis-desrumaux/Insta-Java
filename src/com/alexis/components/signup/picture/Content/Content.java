@@ -8,6 +8,7 @@ import javax.swing.event.*;
 import java.util.ArrayList;
 
 import com.alexis.common.Utils;
+import com.alexis.common.ComponentProps.ComponentProps;
 import com.alexis.common.LayoutBuilder.*;
 import com.alexis.common.LayoutHelper.*;
 import com.alexis.store.Store;
@@ -24,6 +25,7 @@ import javax.swing.filechooser.FileSystemView;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Content extends com.alexis.common.Component.Component {
+  private ContentProps props;
   private Image pp;
   private Point ppPos;
   private JLabel message;
@@ -75,8 +77,7 @@ public class Content extends com.alexis.common.Component.Component {
     }
   }
 
-  private void initNextButton() {
-    this.nextBtn = new JButton("Next");
+  private void setStyleNextButton() {
     Point pos = layoutBuilder.next(0, 0);
     layoutBuilder.setPosition(new Point(0, pos.y));
     Point location = layoutBuilder.next(450, 50,
@@ -85,6 +86,11 @@ public class Content extends com.alexis.common.Component.Component {
     this.nextBtn.setFont(new Font("BlinkMacSystemFont", Font.PLAIN, 18));
     this.nextBtn.setBackground(Color.BLUE);
     this.nextBtn.setForeground(Color.WHITE);
+    this.nextBtn.setVisible(true);
+  }
+  
+  private void initNextButton() {
+    this.nextBtn = new JButton("Next");
     this.nextBtn.setEnabled(true);
 
     this.nextBtn.addActionListener(new ActionListener() {
@@ -92,11 +98,11 @@ public class Content extends com.alexis.common.Component.Component {
         handleOnClickNextButton();
       }
     });
+    this.nextBtn.setVisible(false);
     this.add(this.nextBtn);
   }
 
-  private void initBrowseButton() {
-    this.browseBtn = new JButton("Browse ...");
+  private void setStyleBrowseButton() {
     Point pos = layoutBuilder.next(0, 0);
     layoutBuilder.setPosition(new Point(0, pos.y));
     Point location = layoutBuilder.next(350, 50,
@@ -105,6 +111,11 @@ public class Content extends com.alexis.common.Component.Component {
     this.browseBtn.setFont(new Font("BlinkMacSystemFont", Font.PLAIN, 18));
     this.browseBtn.setBackground(Color.GRAY);
     this.browseBtn.setForeground(Color.WHITE);
+    this.browseBtn.setVisible(true);
+  }
+
+  private void initBrowseButton() {
+    this.browseBtn = new JButton("Browse ...");
     this.browseBtn.setEnabled(true);
 
     this.browseBtn.addActionListener(new ActionListener() {
@@ -112,11 +123,11 @@ public class Content extends com.alexis.common.Component.Component {
         handleOnClickBrowseButton();
       }
     });
+    this.browseBtn.setVisible(false);
     this.add(this.browseBtn);
   }
 
-  private void initMessage() {
-    this.message = new JLabel("Select a profile picture");
+  private void setStyleMessage() {
     Font f = new Font("BlinkMacSystemFont", Font.PLAIN, 30);
     this.message.setFont(f.deriveFont(f.getStyle() | Font.BOLD));
     this.message.setFont(f);
@@ -125,9 +136,20 @@ public class Content extends com.alexis.common.Component.Component {
     Point pos = layoutBuilder.next(width, height,
         new Margin(30, 0, LayoutHelper.getCenter(this.getWidth(), this.getHeight(), width, height).x, 0));
     this.message.setBounds((int) pos.getX(), (int) pos.getY(), width, height);
+    this.message.setVisible(true);
+  }
+
+  private void initMessage() {
+    this.message = new JLabel("Select a profile picture");
+    this.message.setVisible(false);
     //this.message.setBackground(Color.YELLOW);
     //this.message.setOpaque(true);
     this.add(this.message);
+  }
+
+  private void setStylePP() {
+    this.ppPos = layoutBuilder.next(200, 200,
+          new Margin(20, 0, (int) LayoutHelper.getCenter(this.getBounds().width, 0, 200, 0).getX(), 0));
   }
 
   private void initPP() {
@@ -135,15 +157,21 @@ public class Content extends com.alexis.common.Component.Component {
       ImageIcon ii = new ImageIcon(this.ppPath);
       this.pp = ii.getImage();
       this.pp = this.pp.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
-      this.ppPos = layoutBuilder.next(200, 200,
-          new Margin(20, 0, (int) LayoutHelper.getCenter(this.getBounds().width, 0, 200, 0).getX(), 0));
 
     } catch (Exception e) {
       System.out.println(e);
     }
   }
 
-  private void initClassAttributes(Props props) {
+  private void setStyleComponents() {
+    this.layoutBuilder.reset(LayoutBuilder.VERTICAL_ALIGN);
+    this.setStylePP();
+    this.setStyleMessage();
+    this.setStyleBrowseButton();
+    this.setStyleNextButton();
+  }
+
+  private void initClassAttributes() {
     this.layoutBuilder = new LayoutBuilder(0, 0, LayoutBuilder.VERTICAL_ALIGN);
     this.setFocusable(true);
     this.setLayout(null);
@@ -159,13 +187,25 @@ public class Content extends com.alexis.common.Component.Component {
     Graphics2D g2D = (Graphics2D) g;
     g2D.drawImage(pp, (int) ppPos.getX(), (int) ppPos.getY(), this);
   }
+
+  public void updateProps(ComponentProps props) {
+    try {
+      if (props.getPropsTypeName().equals(ContentProps.TYPE_NAME)) {
+        this.props = (ContentProps)props;
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
   
-  public Content(String name, com.alexis.common.Component.Component parent, Props props) {
+  public Content(String name, com.alexis.common.Component.Component parent, ContentProps props) {
     super(name, parent);
-    this.initClassAttributes(props);
+    this.props = props;
+    this.initClassAttributes();
     this.initPP();
     this.initMessage();
     this.initBrowseButton();
     this.initNextButton();
+    this.setStyleComponents();
   }
 }

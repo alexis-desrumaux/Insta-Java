@@ -11,7 +11,6 @@ public class MainFrame {
   
   private JFrame frame;
   private JPanel main;
-  private Home home;
 
   public JFrame getFrame() {
     return this.frame;
@@ -24,15 +23,9 @@ public class MainFrame {
     this.frame.setFocusable(true);
     this.frame.requestFocus();
     this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    this.home = new Home("Home", null);
-    this.main = this.home;
+    this.main = new Home("Home", null);
     this.frame.add(this.main);
     this.frame.pack();
     this.frame.setVisible(true);
-
-    /*while (true) {
-      if (Store.getInstance().getFrameSelected() == Utils.Frame.MAIN)
-        this.frame.dispose();
-    }*/
   }
 }

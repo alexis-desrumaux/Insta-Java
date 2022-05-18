@@ -12,6 +12,7 @@ import java.awt.Color;
 
 import com.alexis.common.LayoutHelper.*;
 import com.alexis.common.Utils;
+import com.alexis.common.ComponentProps.ComponentProps;
 import com.alexis.common.LayoutBuilder.*;
 import com.alexis.store.Store;
 import com.alexis.store.User;
@@ -39,6 +40,7 @@ public class LoginBox extends com.alexis.common.Component.Component {
       Notification.addNotification(this.parent, "This user doesn't exist", Color.WHITE, Color.RED);
     } else {
       if (user.getPassword().equals(this.password)) {
+        Store.getInstance().setUser(user);
         Store.getInstance().getApp().displayMainFrame();
       } else {
         Notification.addNotification(this.parent, "Incorrect password", Color.WHITE, Color.RED);
@@ -78,8 +80,7 @@ public class LoginBox extends com.alexis.common.Component.Component {
     }
   }
 
-  private void initCreateAccountButton() {
-    this.newABtn = new JButton("Click here to create an account");
+  private void setStyleCreateAccountButton() {
     Point location = layoutBuilder.next(350, 16,
         new Margin(20, 0, (int) LayoutHelper.getCenter(this.getBounds().width, 0, 350, 0).getX(), 0));
     this.newABtn.setBounds((int) location.getX(), (int) location.getY(), 350, 16);
@@ -91,22 +92,33 @@ public class LoginBox extends com.alexis.common.Component.Component {
     this.newABtn.setOpaque(false);
     this.newABtn.setContentAreaFilled(false);
     this.newABtn.setBorderPainted(false);
+    this.newABtn.setVisible(true);
+  }
+
+  private void initCreateAccountButton() {
+    this.newABtn = new JButton("Click here to create an account");
+
     this.newABtn.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         Store.getInstance().getApp().getSigninFrame().changingToSignup();
       }
     });
+    this.newABtn.setVisible(false);
     this.add(this.newABtn);
   }
 
-  private void initSigninButton() {
-    this.signinBtn = new JButton("Sign in");
+  private void setStyleSigninButton() {
     Point location = layoutBuilder.next(350, 50,
         new Margin(40, 0, (int) LayoutHelper.getCenter(this.getBounds().width, 0, 350, 0).getX(), 0));
     this.signinBtn.setBounds((int) location.getX(), (int) location.getY(), 350, 50);
     this.signinBtn.setFont(new Font("BlinkMacSystemFont", Font.PLAIN, 18));
     this.signinBtn.setBackground(Color.GRAY);
     this.signinBtn.setForeground(Color.WHITE);
+    this.signinBtn.setVisible(true);
+  }
+  
+  private void initSigninButton() {
+    this.signinBtn = new JButton("Sign in");
     this.signinBtn.setEnabled(false);
 
     this.signinBtn.addActionListener(new ActionListener() {
@@ -114,22 +126,25 @@ public class LoginBox extends com.alexis.common.Component.Component {
         handleOnClickSignin();
       }
     });
-
+    this.signinBtn.setVisible(false);
     this.add(this.signinBtn);
   }
 
-  private void initPwdField() {
-    this.pwdField = new JPasswordField();
+  private void setStylePwdField() {
     Point pField = layoutBuilder.next(350, 50,
         new Margin(40, 0, (int) LayoutHelper.getCenter(this.getBounds().width, 0, 350, 0).getX(), 0));
     this.pwdField.setBounds((int) pField.getX(), (int) pField.getY(), 350, 50);
-    this.pwdField.setText("Password");
     this.pwdField.setForeground(new Color(171, 171, 171));
     this.pwdField.setFont(new Font("BlinkMacSystemFont", Font.PLAIN, 18));
     this.pwdField.setEchoChar((char) 0);
     this.pwdField.setBorder(BorderFactory.createCompoundBorder(
-        this.pwdField.getBorder(),
+      this.pwdField.getBorder(),
         BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+        this.pwdField.setVisible(true);
+  }
+  
+  private void initPwdField() {
+    this.pwdField = new JPasswordField("Password");
 
     this.pwdField.addFocusListener(new FocusListener() {
       public void focusGained(FocusEvent fe) {
@@ -154,21 +169,24 @@ public class LoginBox extends com.alexis.common.Component.Component {
         handleOnChangePasswordInput();
       }
     });
+    this.pwdField.setVisible(false);
     this.add(this.pwdField);
   }
 
-  private void initNickNameField() {
-    this.nickNameField = new JTextField();
+  private void setStyleNickNameField() {
     Point nField = layoutBuilder.next(350, 50,
         new Margin(40, 0, (int) LayoutHelper.getCenter(this.getBounds().width, 0, 350, 0).getX(), 0));
     this.nickNameField.setBounds((int) nField.getX(), (int) nField.getY(), 350, 50);
-    this.nickNameField.setText("Username");
     this.nickNameField.setForeground(new Color(171, 171, 171));
     this.nickNameField.setFont(new Font("BlinkMacSystemFont", Font.PLAIN, 18));
-
     this.nickNameField.setBorder(BorderFactory.createCompoundBorder(
         this.nickNameField.getBorder(),
         BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+    this.nickNameField.setVisible(true);
+  }
+
+  private void initNickNameField() {
+    this.nickNameField = new JTextField("Username");
 
     this.nickNameField.addFocusListener(new FocusListener() {
       public void focusGained(FocusEvent fe) {
@@ -191,7 +209,13 @@ public class LoginBox extends com.alexis.common.Component.Component {
         handleOnChangeNickNameInput();
       }
     });
+    this.nickNameField.setVisible(false);
     this.add(this.nickNameField);
+  }
+
+  private void setStyleLogo() {
+    this.logoPos = layoutBuilder.next(341, 100,
+        new Margin(20, 0, (int) LayoutHelper.getCenter(this.getBounds().width, 0, 341, 0).getX(), 0));
   }
 
   private void initLogo() {
@@ -199,24 +223,35 @@ public class LoginBox extends com.alexis.common.Component.Component {
       ImageIcon ii = new ImageIcon("src/com/alexis/assets/logo.png");
       this.logo = ii.getImage();
       this.logo = this.logo.getScaledInstance(341, 100, Image.SCALE_SMOOTH);
-      this.logoPos = layoutBuilder.next(341, 100,
-          new Margin(20, 0, (int) LayoutHelper.getCenter(this.getBounds().width, 0, 341, 0).getX(), 0));
-
     } catch (Exception e) {
       System.out.println(e);
     }
   }
 
-  private void initTitle() {
-
-    this.cTitle = new JLabel("Welcome to SKOC!");
+  private void setStyleTitle() {
     this.cTitle.setFont(new Font("BlinkMacSystemFont", Font.PLAIN, 30));
     Font f = this.cTitle.getFont();
     this.cTitle.setFont(f.deriveFont(f.getStyle() | Font.BOLD));
     Point cTitlePos = layoutBuilder.next(320, 30,
         new Margin(20, 0, (int) LayoutHelper.getCenter(this.getBounds().width, 0, 320, 0).getX(), 0));
     this.cTitle.setBounds((int) cTitlePos.getX(), (int) cTitlePos.getY(), 320, 30);
+    this.cTitle.setVisible(true);
+  }
+
+  private void initTitle() {
+    this.cTitle = new JLabel("Welcome to SKOC!");
+    this.cTitle.setVisible(false);
     this.add(this.cTitle);
+  }
+
+  private void setStyleComponents() {
+    this.layoutBuilder.reset(LayoutBuilder.VERTICAL_ALIGN);
+    this.setStyleLogo();
+    this.setStyleTitle();
+    this.setStyleNickNameField();
+    this.setStylePwdField();
+    this.setStyleSigninButton();
+    this.setStyleCreateAccountButton();
   }
 
   public void initClassAttributes() {
@@ -238,6 +273,9 @@ public class LoginBox extends com.alexis.common.Component.Component {
     g2D.drawImage(logo, (int) logoPos.getX(), (int) logoPos.getY(), this);
   }
 
+  public void updateProps(ComponentProps props) {
+  };
+
   public LoginBox(String name, com.alexis.common.Component.Component parent) {
     super(name, parent, 30, Color.WHITE);
     this.initClassAttributes();
@@ -247,5 +285,6 @@ public class LoginBox extends com.alexis.common.Component.Component {
     this.initPwdField();
     this.initSigninButton();
     this.initCreateAccountButton();
+    this.setStyleComponents();
   }
 }

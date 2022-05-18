@@ -6,11 +6,19 @@ import javax.swing.*;
 public class CustomJPanel extends JPanel {
   private Color backgroundColor;
   private int cornerRadius = 15;
+  private int borderSize = 1;
 
   public void setBackgroundColor(Color bgColor) {
     backgroundColor = bgColor;
     revalidate();
     repaint();
+  }
+
+  public CustomJPanel(int radius, Color bgColor, int borderSize) {
+    super();
+    cornerRadius = radius;
+    backgroundColor = bgColor;
+    this.borderSize = borderSize;
   }
 
   public CustomJPanel(int radius) {
@@ -38,8 +46,8 @@ public class CustomJPanel extends JPanel {
     } else {
       graphics.setColor(getBackground());
     }
-    graphics.fillRoundRect(0, 0, width - 1, height - 1, arcs.width, arcs.height);
+    graphics.fillRoundRect(0, 0, width - borderSize, height - borderSize, arcs.width, arcs.height);
     graphics.setColor(getForeground());
-    graphics.drawRoundRect(0, 0, width - 1, height - 1, arcs.width, arcs.height);
+    graphics.drawRoundRect(0, 0, width - borderSize, height - borderSize, arcs.width, arcs.height);
   }
 }

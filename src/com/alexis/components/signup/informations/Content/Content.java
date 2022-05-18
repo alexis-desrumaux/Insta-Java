@@ -8,6 +8,7 @@ import javax.swing.event.*;
 import java.util.ArrayList;
 
 import com.alexis.common.Utils;
+import com.alexis.common.ComponentProps.ComponentProps;
 import com.alexis.common.LayoutBuilder.*;
 import com.alexis.common.LayoutHelper.*;
 import com.alexis.store.Store;
@@ -16,6 +17,7 @@ import com.alexis.store.*;
 import com.alexis.common.UserSaveFileParser.UserSaveFileParser;
 
 public class Content extends com.alexis.common.Component.Component {
+  private ContentProps props;
   private JLabel welcome;
   private JLabel message;
   private JLabel hobbiesTitle;
@@ -120,8 +122,7 @@ public class Content extends com.alexis.common.Component.Component {
     }
   }
 
-  private void initNextButton() {
-    this.nextBtn = new JButton("Next");
+  private void setStyleNextButton() {
     Point pos = layoutBuilder.next(0, 0);
     layoutBuilder.setPosition(new Point(0, pos.y));
     Point location = layoutBuilder.next(350, 50,
@@ -130,6 +131,11 @@ public class Content extends com.alexis.common.Component.Component {
     this.nextBtn.setFont(new Font("BlinkMacSystemFont", Font.PLAIN, 18));
     this.nextBtn.setBackground(Color.GRAY);
     this.nextBtn.setForeground(Color.WHITE);
+    this.nextBtn.setVisible(true);
+  }
+
+  private void initNextButton() {
+    this.nextBtn = new JButton("Next");
     this.nextBtn.setEnabled(false);
 
     this.nextBtn.addActionListener(new ActionListener() {
@@ -137,8 +143,20 @@ public class Content extends com.alexis.common.Component.Component {
         handleOnClickNextButton();
       }
     });
-
+    this.nextBtn.setVisible(false);
     this.add(this.nextBtn);
+  }
+
+  private void setStyleAgeSelector() {
+    int width = 200;
+    int height = 50;
+    layoutBuilder.changeAlign(LayoutBuilder.VERTICAL_ALIGN);
+    Point pos = layoutBuilder.next(width, height,
+        new Margin(30, 0, 20, 0));
+    this.cAge.setBounds((int) pos.getX(), (int) pos.getY(), width, height);
+    this.cAge.setBackground(Color.WHITE);
+    this.cAge.setFont(new Font("BlinkMacSystemFont", Font.PLAIN, 18));
+    this.cAge.setVisible(true);
   }
 
   private void initAgeSelector() {
@@ -149,14 +167,6 @@ public class Content extends com.alexis.common.Component.Component {
     }
     String[] options = ageList.toArray(new String[0]);
     this.cAge = new JComboBox<String>(options);
-    int width = 200;
-    int height = 50;
-    layoutBuilder.changeAlign(LayoutBuilder.VERTICAL_ALIGN);
-    Point pos = layoutBuilder.next(width, height,
-        new Margin(30, 0, 20, 0));
-    this.cAge.setBounds((int) pos.getX(), (int) pos.getY(), width, height);
-    this.cAge.setBackground(Color.WHITE);
-    this.cAge.setFont(new Font("BlinkMacSystemFont", Font.PLAIN, 18));
     this.cAge.addItemListener(new ItemListener() {
       @Override
       public void itemStateChanged(ItemEvent e) {
@@ -166,11 +176,11 @@ public class Content extends com.alexis.common.Component.Component {
         }
       }
     });
+    this.cAge.setVisible(false);
     this.add(this.cAge);
   }
 
-  private void initAgeTitle() {
-    this.ageTitle = new JLabel("Age:");
+  private void setStyleAgeTitle() {
     Font f = new Font("BlinkMacSystemFont", Font.PLAIN, 20);
     this.ageTitle.setFont(f);
     int width = 100;
@@ -181,16 +191,18 @@ public class Content extends com.alexis.common.Component.Component {
     pos = layoutBuilder.next(width, height,
         new Margin(40, 0, (int) LayoutHelper.getCenter(this.getWidth(), 0, 320, 0).getX(), 0));
     this.ageTitle.setBounds((int) pos.getX(), (int) pos.getY(), width, height);
+    this.ageTitle.setVisible(true);
+  }
+
+  private void initAgeTitle() {
+    this.ageTitle = new JLabel("Age:");
     // this.hobbiesTitle.setBackground(Color.YELLOW);
     // this.hobbiesTitle.setOpaque(true);
+    this.ageTitle.setVisible(false);
     this.add(this.ageTitle);
   }
 
-  private void initHobbies() {
-    String[] options = { "Cars", "Music", "Memes", "VideoGames" };
-
-    this.c1 = new JComboBox<String>(options);
-    this.c2 = new JComboBox<String>(options);
+  private void setStyleHobbies() {
     int width = 200;
     int height = 50;
     layoutBuilder.changeAlign(LayoutBuilder.HORIZONTAL_ALIGN);
@@ -205,6 +217,16 @@ public class Content extends com.alexis.common.Component.Component {
     this.c2.setBackground(Color.WHITE);
     this.c1.setFont(new Font("BlinkMacSystemFont", Font.PLAIN, 18));
     this.c2.setFont(new Font("BlinkMacSystemFont", Font.PLAIN, 18));
+    this.c1.setVisible(true);
+    this.c2.setVisible(true);
+  }
+
+  private void initHobbies() {
+    String[] options = { "Cars", "Music", "Memes", "VideoGames" };
+
+    this.c1 = new JComboBox<String>(options);
+    this.c2 = new JComboBox<String>(options);
+    this.c2.setSelectedIndex(2);
     this.c1.addItemListener(new ItemListener() {
       @Override
       public void itemStateChanged(ItemEvent e) {
@@ -223,12 +245,13 @@ public class Content extends com.alexis.common.Component.Component {
         }
       }
     });
+    this.c1.setVisible(false);
+    this.c2.setVisible(false);
     this.add(c1);
     this.add(c2);
   }
 
-  private void initHobbiesLabel() {
-    this.hobbiesTitle = new JLabel("Hobbies:");
+  private void setStyleHobbiesLabel() {
     Font f = new Font("BlinkMacSystemFont", Font.PLAIN, 20);
     this.hobbiesTitle.setFont(f);
     int width = 100;
@@ -236,24 +259,33 @@ public class Content extends com.alexis.common.Component.Component {
     Point pos = layoutBuilder.next(width, height,
         new Margin(30, 0, LayoutHelper.getCenter(this.getWidth(), this.getHeight(), width, height).x, 0));
     this.hobbiesTitle.setBounds((int) pos.getX(), (int) pos.getY(), width, height);
+    this.hobbiesTitle.setVisible(true);
+  }
+
+  private void initHobbiesLabel() {
+    this.hobbiesTitle = new JLabel("Hobbies:");
+    this.hobbiesTitle.setVisible(false);
     // this.hobbiesTitle.setBackground(Color.YELLOW);
     // this.hobbiesTitle.setOpaque(true);
     this.add(this.hobbiesTitle);
   }
 
-  private void initSurname() {
-    this.surnameField = new JTextField();
+  private void setStyleSurname() {
     int width = 400;
     int height = 50;
     Point pos = layoutBuilder.next(width, height,
         new Margin(40, 0, (int) LayoutHelper.getCenter(this.getBounds().width, 0, width, 0).getX(), 0));
     this.surnameField.setBounds((int) pos.getX(), (int) pos.getY(), width, height);
-    this.surnameField.setText("Surname");
     this.surnameField.setForeground(new Color(171, 171, 171));
     this.surnameField.setFont(new Font("BlinkMacSystemFont", Font.PLAIN, 18));
     this.surnameField.setBorder(BorderFactory.createCompoundBorder(
         this.surnameField.getBorder(),
         BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+    this.surnameField.setVisible(true);
+  }
+
+  private void initSurname() {
+    this.surnameField = new JTextField("Surname");
 
     this.surnameField.addFocusListener(new FocusListener() {
       public void focusGained(FocusEvent fe) {
@@ -276,23 +308,26 @@ public class Content extends com.alexis.common.Component.Component {
         handleOnChangeSurnameInput();
       }
     });
-
+    this.surnameField.setVisible(false);
     this.add(this.surnameField);
   }
 
-  private void initName() {
-    this.nameField = new JTextField();
+  private void setStyleName() {
     int width = 400;
     int height = 50;
     Point pos = layoutBuilder.next(width, height,
         new Margin(40, 0, (int) LayoutHelper.getCenter(this.getBounds().width, 0, width, 0).getX(), 0));
     this.nameField.setBounds((int) pos.getX(), (int) pos.getY(), width, height);
-    this.nameField.setText("Name");
     this.nameField.setForeground(new Color(171, 171, 171));
     this.nameField.setFont(new Font("BlinkMacSystemFont", Font.PLAIN, 18));
     this.nameField.setBorder(BorderFactory.createCompoundBorder(
         this.nameField.getBorder(),
         BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+    this.nameField.setVisible(true);
+  }
+
+  private void initName() {
+    this.nameField = new JTextField("Name");
 
     this.nameField.addFocusListener(new FocusListener() {
       public void focusGained(FocusEvent fe) {
@@ -315,12 +350,11 @@ public class Content extends com.alexis.common.Component.Component {
         handleOnChangeNameInput();
       }
     });
-
+    this.nameField.setVisible(false);
     this.add(this.nameField);
   }
 
-  private void initMessage() {
-    this.message = new JLabel("Please fill the informations below");
+  private void setStyleMessage() {
     Font f = new Font("BlinkMacSystemFont", Font.PLAIN, 20);
     this.message.setFont(f);
     int width = 335;
@@ -328,28 +362,39 @@ public class Content extends com.alexis.common.Component.Component {
     Point pos = layoutBuilder.next(width, height,
         new Margin(30, 0, LayoutHelper.getCenter(this.getWidth(), this.getHeight(), width, height).x, 0));
     this.message.setBounds((int) pos.getX(), (int) pos.getY(), width, height);
+    this.message.setVisible(true);
+  }
+
+  private void initMessage() {
+    this.message = new JLabel("Please fill the informations below");
+    this.message.setVisible(false);
     // this.message.setBackground(Color.YELLOW);
     // this.message.setOpaque(true);
     this.add(this.message);
   }
 
-  private void initWelcome() {
-    this.welcome = new JLabel(
-        "Welcome " + Store.getInstance().getUser().getNickName());
+  private void setStyleWelcome() {
     Font f = new Font("BlinkMacSystemFont", Font.PLAIN, 30);
     this.welcome.setFont(f.deriveFont(f.getStyle() | Font.BOLD));
     this.welcome.setBounds(0, 0, 0, 30);
     layoutBuilder.next(0, 30, new Margin(30, 0, 0, 0));
+    this.welcome.setVisible(true);
+  }
+
+  private void initWelcome() {
+    this.welcome = new JLabel(
+        "Welcome " + Store.getInstance().getUser().getNickName());
+    this.welcome.setVisible(false);
     this.add(this.welcome);
   }
 
-  private void initClassAttributes(Props props) {
+  private void initClassAttributes() {
     this.layoutBuilder = new LayoutBuilder(0, 0, LayoutBuilder.VERTICAL_ALIGN);
     this.name = "";
     this.surname = "";
     this.age = 18;
     this.hobbie1 = "Cars";
-    this.hobbie2 = "Cars";
+    this.hobbie2 = "Memes";
     this.dontUpdateName = false;
     this.dontUpdateSurname = false;
     this.setFocusable(true);
@@ -358,6 +403,19 @@ public class Content extends com.alexis.common.Component.Component {
         Utils.SCREEN_HEIGHT - 130);
     this.setBackground(Color.WHITE);
     this.setOpaque(true);
+  }
+
+  private void setStyleComponents() {
+    this.layoutBuilder.reset(LayoutBuilder.VERTICAL_ALIGN);
+    this.setStyleWelcome();
+    this.setStyleMessage();
+    this.setStyleName();
+    this.setStyleSurname();
+    this.setStyleHobbiesLabel();
+    this.setStyleHobbies();
+    this.setStyleAgeTitle();
+    this.setStyleAgeSelector();
+    this.setStyleNextButton();
   }
 
   private void setPositionWelcome(Graphics g) {
@@ -376,9 +434,20 @@ public class Content extends com.alexis.common.Component.Component {
     this.setPositionWelcome(g);
   }
 
-  public Content(String name, com.alexis.common.Component.Component parent, Props props) {
+  public void updateProps(ComponentProps props) {
+    try {
+      if (props.getPropsTypeName().equals(ContentProps.TYPE_NAME)) {
+        this.props = (ContentProps) props;
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  public Content(String name, com.alexis.common.Component.Component parent, ContentProps props) {
     super(name, parent);
-    this.initClassAttributes(props);
+    this.props = props;
+    this.initClassAttributes();
     this.initWelcome();
     this.initMessage();
     this.initName();
@@ -388,5 +457,6 @@ public class Content extends com.alexis.common.Component.Component {
     this.initAgeTitle();
     this.initAgeSelector();
     this.initNextButton();
+    this.setStyleComponents();
   }
 }

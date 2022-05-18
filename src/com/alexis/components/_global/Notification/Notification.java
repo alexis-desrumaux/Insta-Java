@@ -5,6 +5,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import com.alexis.common.Utils;
+import com.alexis.common.ComponentProps.ComponentProps;
 
 public class Notification extends com.alexis.common.Component.Component {
   private JLabel message;
@@ -34,20 +35,36 @@ public class Notification extends com.alexis.common.Component.Component {
     this.setBackgroundColor(notificationColor);
   }
 
+  private void setStyleMessage() {
+    this.message.setFont(new Font("BlinkMacSystemFont", Font.PLAIN, 18));
+    this.message.setBounds(20, 0, 500, 70);
+    this.message.setForeground(Color.BLACK);
+    this.setVisible(true);
+  }
+
+  private void initMessage() {
+    this.message = new JLabel("");
+    this.message.setVisible(false);
+    this.add(this.message);
+  }
+
+  private void setStyleComponents() {
+    this.setStyleMessage();
+  }
+
   public void initClassAttributes() {
     this.setLayout(null);
     this.setOpaque(false);
     this.setBounds(Utils.SCREEN_WIDTH - 500, 0, 500, 70);
-    this.message = new JLabel("lol");
-    this.message.setFont(new Font("BlinkMacSystemFont", Font.PLAIN, 18));
-    this.message.setBounds(20, 0, 500, 70);
-    this.message.setForeground(Color.BLACK);
-    this.add(this.message);
     this.setVisible(true);
   }
+
+  public void updateProps(ComponentProps props) {};
 
   public Notification(String name, com.alexis.common.Component.Component parent) {
     super(name, parent, 30, Color.WHITE);
     this.initClassAttributes();
+    this.initMessage();
+    this.setStyleComponents();
   }
 }

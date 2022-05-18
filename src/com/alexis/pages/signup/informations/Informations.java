@@ -3,10 +3,11 @@ package com.alexis.pages.signup.informations;
 import java.awt.*;
 
 import com.alexis.common.Utils;
+import com.alexis.common.ComponentProps.ComponentProps;
 import com.alexis.common.LayoutBuilder.*;
 import com.alexis.components._global.Header.*;
 import com.alexis.components.signup.informations.Content.*;
-import com.alexis.components.signup.informations.Content.Props;
+import com.alexis.components.signup.informations.Content.ContentProps;
 
 public class Informations extends com.alexis.common.Component.Component {
   private LayoutBuilder layoutBuilder;
@@ -16,7 +17,7 @@ public class Informations extends com.alexis.common.Component.Component {
     int height = Utils.SCREEN_HEIGHT - 130;
     Point contentPos = layoutBuilder.next(width, height);
     Content content = new Content("Content", this,
-        new Props(new Point((int) contentPos.getX(), (int) contentPos.getY())));
+        new ContentProps(new Point((int) contentPos.getX(), (int) contentPos.getY())));
     this.add(content);
   }
 
@@ -25,7 +26,7 @@ public class Informations extends com.alexis.common.Component.Component {
     int height = 130;
     Point headerPos = layoutBuilder.next(width, height);
     Header header = new Header("Header", this,
-        new com.alexis.components._global.Header.Props(new Point((int) headerPos.getX(), (int) headerPos.getY())));
+        new com.alexis.components._global.Header.HeaderProps(new Point((int) headerPos.getX(), (int) headerPos.getY())));
     this.add(header);
   }
 
@@ -38,6 +39,8 @@ public class Informations extends com.alexis.common.Component.Component {
     this.setLayout(null);
     this.layoutBuilder = new LayoutBuilder(0, 0, LayoutBuilder.VERTICAL_ALIGN);
   }
+
+  public void updateProps(ComponentProps props) {};
 
   public Informations(String name, com.alexis.common.Component.Component parent) {
     super(name, parent);

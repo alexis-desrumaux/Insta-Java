@@ -10,6 +10,11 @@ import com.alexis.db.*;
 public class App {
     private JFrame frame;
     private SigninFrame signinFrame;
+    private MainFrame mainFrame;
+
+    public MainFrame getMainFrame() {
+        return this.mainFrame;
+    }
 
     public SigninFrame getSigninFrame() {
         return this.signinFrame;
@@ -27,7 +32,8 @@ public class App {
         if (this.frame != null) {
             this.frame.dispose();
         }
-        this.frame = new MainFrame().getFrame();
+        this.mainFrame = new MainFrame();
+        this.frame = this.mainFrame.getFrame();
     }
 
     public App() {
