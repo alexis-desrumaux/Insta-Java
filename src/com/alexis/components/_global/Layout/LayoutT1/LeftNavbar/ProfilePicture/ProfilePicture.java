@@ -90,9 +90,12 @@ public class ProfilePicture extends com.alexis.common.Component.Component {
     GradientPaint gradient = new GradientPaint(0, 0, Color.BLUE, 400, 230, Color.RED);
     g2D.setPaint(gradient);
     g2D.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
-    int width = g.getFontMetrics(this.title.getFont()).stringWidth(this.title.getText());
-    this.titleRec.width = width;
-    this.setStyleComponents();
+
+    if (this.titleRec.width == 0) {
+      int width = g.getFontMetrics(this.title.getFont()).stringWidth(this.title.getText());
+      this.titleRec.width = width;
+      this.setStyleComponents();
+    }
 
     g2D.setColor(Color.WHITE);
     g2D.fillRect(this.logoPos.x, this.logoPos.y, 129, 129);

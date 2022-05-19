@@ -52,6 +52,7 @@ public class Links extends com.alexis.common.Component.Component {
     this.profileBtn.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         System.out.println("CLICK");
+        Store.getInstance().getApp().getMainFrame().changingToProfile();
       }
     });
     this.profileBtn.setVisible(false);

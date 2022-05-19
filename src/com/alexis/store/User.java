@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.alexis.common.UserType.PremiumUser.PremiumUser;
 import com.alexis.common.UserType.StandardUser.StandardUser;
+import com.alexis.common.Content.Content;
 import com.alexis.common.UserSaveFileParser.UserSaveFileParser;
 import com.alexis.common.UserSaveFileParser.UserSaveFileParser.SectionKeys;
 import com.alexis.common.UserSaveFileParser.UserSaveFileParser.UserKeys;
@@ -21,6 +22,7 @@ public abstract class User {
   protected ArrayList<String> hobbies;
   protected String ppPath;
   protected USER_TYPE accountType;
+  protected ArrayList<Content> contents;
 
   public static enum USER_TYPE {
     STANDARD,
@@ -39,7 +41,26 @@ public abstract class User {
     s += "hobbies=" + this.hobbies.toString() + '\n';
     s += "ppPath=" + this.ppPath + '\n';
     s += "accountType=" + this.accountType.toString();
+
+    int i = 0;
+    if (this.contents.size() != 0)
+      s += '\n';
+    for (Content c : this.contents) {
+      if (i != 0) {
+        s += '\n';
+      }
+      s += c.toString();
+      i += 1;
+    }
     return s;
+  }
+
+  public void setContents(ArrayList<Content> contents) {
+    this.contents = contents;
+  }
+
+  public ArrayList<Content> getContents() {
+    return this.contents;
   }
 
   public USER_TYPE getUserType() {
@@ -110,40 +131,58 @@ public abstract class User {
     return this.nickName;
   }
 
+  public static ArrayList<Content> createUserByFile_createContents(UserSaveFileParser saveFile, User u) {
+    ArrayList<Content> newContents = new ArrayList<Content>();
+    for (int i = 0; i != saveFile.getContentsSection().size(); i += 1) {
+      System.out.println(saveFile.getContentsSection().get(i).get(UserSaveFileParser.ContentKeys.TITLE.toString()));
+      System.out
+          .println(saveFile.getContentsSection().get(i).get(UserSaveFileParser.ContentKeys.CREATION_TIME.toString()));
+      newContents.add(new Content(
+          saveFile.getContentsSection().get(i).get(UserSaveFileParser.ContentKeys.TITLE.toString()),
+          Long.parseLong(
+              saveFile.getContentsSection().get(i).get(UserSaveFileParser.ContentKeys.CREATION_TIME.toString())),
+          u,
+          saveFile.getContentsSection().get(i).get(UserSaveFileParser.ContentKeys.TXT.toString()),
+          saveFile.getContentsSection().get(i).get(UserSaveFileParser.ContentKeys.IMAGE_PATH.toString())));
+    }
+    return newContents;
+  }
+
   public static User createUserByFile(UserSaveFileParser saveFile) {
 
-    String accountType = saveFile.getSection(SectionKeys.USER).get(UserKeys.AccountType.toString());
-    String hobbies = saveFile.getSection(SectionKeys.USER).get(UserKeys.Hobbies.toString());
+    String accountType = saveFile.getUserSection().get(UserKeys.AccountType.toString());
+    String hobbies = saveFile.getUserSection().get(UserKeys.Hobbies.toString());
     List<String> hobbiesList = Arrays.asList(hobbies.split(" "));
     ArrayList<String> hobbiesArrayList = new ArrayList<>();
     for (String h : hobbiesList)
       hobbiesArrayList.add(h);
     String pp = "";
-    if (saveFile.getSection(SectionKeys.USER).get(UserKeys.PP.toString()).equals("NONE") == false) {
-      pp = saveFile.getSection(SectionKeys.USER).get(UserKeys.PP.toString());
+    if (saveFile.getUserSection().get(UserKeys.PP.toString()).equals("NONE") == false) {
+      pp = saveFile.getUserSection().get(UserKeys.PP.toString());
     }
     User user = null;
     if (accountType.equals("STANDARD")) {
-      user = new StandardUser(saveFile.getSection(SectionKeys.USER).get(UserKeys.NickName.toString()),
-          saveFile.getSection(SectionKeys.USER).get(UserKeys.Password.toString()),
-          saveFile.getSection(SectionKeys.USER).get(UserKeys.Name.toString()),
-          saveFile.getSection(SectionKeys.USER).get(UserKeys.Surname.toString()),
-          Integer.parseInt(saveFile.getSection(SectionKeys.USER).get(UserKeys.Age.toString())),
-          saveFile.getSection(SectionKeys.USER).get(UserKeys.Email.toString()), hobbiesArrayList,
-          pp);
-      
+      user = new StandardUser("", "", "", "", 0, "", new ArrayList<String>(), "", new ArrayList<Content>());
     } else if (accountType.equals("PREMIUM")) {
-      user = new PremiumUser(saveFile.getSection(SectionKeys.USER).get(UserKeys.NickName.toString()),
-          saveFile.getSection(SectionKeys.USER).get(UserKeys.Password.toString()),
-          saveFile.getSection(SectionKeys.USER).get(UserKeys.Name.toString()),
-          saveFile.getSection(SectionKeys.USER).get(UserKeys.Surname.toString()),
-          Integer.parseInt(saveFile.getSection(SectionKeys.USER).get(UserKeys.Age.toString())),
-          saveFile.getSection(SectionKeys.USER).get(UserKeys.Email.toString()), hobbiesArrayList,
-          pp);
+      user = new PremiumUser("", "", "", "", 0, "", new ArrayList<String>(), "", new ArrayList<Content>());
+    } else {
+      user = new StandardUser("", "", "", "", 0, "", new ArrayList<String>(), "", new ArrayList<Content>());
     }
-    /*if (user == null) {
-      System.out.println("NULL");
-    }*/
+    ArrayList<Content> newC = createUserByFile_createContents(saveFile, user);
+    user.setNickName(saveFile.getUserSection().get(UserKeys.NickName.toString()));
+    user.setPassword(saveFile.getUserSection().get(UserKeys.Password.toString()));
+    user.setName(saveFile.getUserSection().get(UserKeys.Name.toString()));
+    user.setSurname(saveFile.getUserSection().get(UserKeys.Surname.toString()));
+    user.setAge(Integer.parseInt(saveFile.getUserSection().get(UserKeys.Age.toString())));
+    user.setEmail(saveFile.getUserSection().get(UserKeys.Email.toString()));
+    user.setHobbies(hobbiesArrayList);
+    user.setPPPath(pp);
+    user.setContents(newC);
+    /*
+     * if (user == null) {
+     * System.out.println("NULL");
+     * }
+     */
     return user;
   }
 
@@ -154,7 +193,7 @@ public abstract class User {
       int age,
       String email,
       ArrayList<String> hobbies,
-      String ppPath) {
+      String ppPath, ArrayList<Content> contents) {
     this.nickName = nickName;
     this.password = password;
     this.name = name;
@@ -164,5 +203,6 @@ public abstract class User {
     this.hobbies = hobbies;
     this.ppPath = ppPath;
     this.accountType = USER_TYPE.STANDARD;
+    this.contents = contents;
   }
 }

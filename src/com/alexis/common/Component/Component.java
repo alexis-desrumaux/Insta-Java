@@ -41,7 +41,7 @@ public abstract class Component extends CustomJPanel {
   }
 
   public Component(String name, Component parent) {
-    super(0);
+    super(true);
     this.name = name;
     this.parent = parent;
   }

@@ -4,6 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.font.TextAttribute;
 import java.util.Map;
+import java.util.Objects;
 import java.util.HashMap;
 import java.awt.event.*;
 import javax.swing.event.*;
@@ -20,6 +21,7 @@ import com.alexis.store.Store;
 import com.alexis.store.User;
 import com.alexis.common.SimpleDocumentListener.*;
 import com.alexis.components._global.Notification.Notification;
+import com.alexis.components.profile.ProfileChild.ProfileChildProps;
 import com.alexis.components._global.Layout.LayoutT1.Header.Header;
 import com.alexis.components._global.Layout.LayoutT1.Header.HeaderProps;
 import com.alexis.components._global.Layout.LayoutT1.LeftNavbar.LeftNavbar;
@@ -32,9 +34,25 @@ public class LayoutT1 extends com.alexis.common.Component.Component {
   private JScrollPane leftNavbarScroller;
   private LayoutBuilder layoutBuilder;
   private Image bg;
+  private Point childPos;
 
+  public Point getPositionChild() {
+    return this.childPos;
+  }
+
+  private void setStyleChild() {
+    this.childPos = layoutBuilder.next(800, 700, new Margin(30, 0, 50, 0));
+  }
+
+  private void initChild() {
+
+    if (this.props.child != null) {
+      this.add(this.props.child);
+    }
+  }
 
   private void setStyleLeftNavbar() {
+    layoutBuilder.changeAlign(LayoutBuilder.HORIZONTAL_ALIGN);
     Point pos = layoutBuilder.next(0, 0);
     layoutBuilder.setPosition(new Point(0, pos.y));
     Point leftNavbarPos = layoutBuilder.next(270, 500, new Margin(30, 0, 50, 0));
@@ -53,6 +71,7 @@ public class LayoutT1 extends com.alexis.common.Component.Component {
   }
 
   private void initLeftNavbar() {
+    layoutBuilder.changeAlign(LayoutBuilder.HORIZONTAL_ALIGN);
     Point pos = layoutBuilder.next(0, 0);
     layoutBuilder.setPosition(new Point(0, pos.y));
     Point leftNavbarPos = layoutBuilder.next(350, 500, new Margin(30, 0, 20, 0));
@@ -98,6 +117,7 @@ public class LayoutT1 extends com.alexis.common.Component.Component {
     this.layoutBuilder.reset(LayoutBuilder.VERTICAL_ALIGN);
     this.setStyleHeader();
     this.setStyleLeftNavbar();
+    this.setStyleChild();
   }
 
   public void initClassAttributes() {
@@ -130,10 +150,12 @@ public class LayoutT1 extends com.alexis.common.Component.Component {
   
   public LayoutT1(String name, com.alexis.common.Component.Component parent, LayoutT1Props props) {
     super(name, parent);
+    this.props = props;
     this.initClassAttributes();
     this.initBackground();
     this.initHeader();
     this.initLeftNavbar();
+    this.initChild();
     this.setStyleComponents();
   }
 }

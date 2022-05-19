@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 
 import com.alexis.common.Utils;
 import com.alexis.pages.home.*;
+import com.alexis.pages.profile.Profile;
 import com.alexis.store.Store;
 
 public class MainFrame {
@@ -14,6 +15,16 @@ public class MainFrame {
 
   public JFrame getFrame() {
     return this.frame;
+  }
+
+  public void changingToProfile() {
+    this.main = new Profile("Profile", null);
+    this.frame.setTitle(Store.getInstance().getUser().getNickName() + " - SKOC");
+    this.frame.getContentPane().removeAll(); // or .remove(previousPanel);
+    this.frame.getContentPane().add(this.main);
+    this.frame.revalidate(); // in- and validate in one !!
+    this.frame.pack(); //
+    System.out.println("Profile !");
   }
 
   public MainFrame() {

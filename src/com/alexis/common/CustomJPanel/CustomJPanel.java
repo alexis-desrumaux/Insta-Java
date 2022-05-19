@@ -7,6 +7,7 @@ public class CustomJPanel extends JPanel {
   private Color backgroundColor;
   private int cornerRadius = 15;
   private int borderSize = 1;
+  private boolean isDisabled;
 
   public void setBackgroundColor(Color bgColor) {
     backgroundColor = bgColor;
@@ -14,27 +15,37 @@ public class CustomJPanel extends JPanel {
     repaint();
   }
 
+  public CustomJPanel(boolean isDisabled) {
+    this.isDisabled = isDisabled;
+  }
+
   public CustomJPanel(int radius, Color bgColor, int borderSize) {
     super();
     cornerRadius = radius;
     backgroundColor = bgColor;
     this.borderSize = borderSize;
+    this.isDisabled = false;
   }
 
   public CustomJPanel(int radius) {
     super();
     cornerRadius = radius;
+    this.isDisabled = false;
   }
 
   public CustomJPanel(int radius, Color bgColor) {
     super();
     cornerRadius = radius;
     backgroundColor = bgColor;
+    this.isDisabled = false;
   }
 
   @Override
   protected void paintComponent(Graphics g) {
     super.paintComponent(g);
+
+    if (this.isDisabled)
+      return;
     Dimension arcs = new Dimension(cornerRadius, cornerRadius);
     int width = getWidth();
     int height = getHeight();

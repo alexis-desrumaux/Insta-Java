@@ -32,7 +32,7 @@ public class Header extends com.alexis.common.Component.Component {
     Point posO = layoutBuilder.next(0, 0);
     Point pos = layoutBuilder.next(this.profileRec.width, this.profileRec.height,
         new Margin((int) LayoutHelper.getCenter(0, this.getHeight(), 0, this.profileRec.height).getY(), 0,
-            this.getWidth() - (int)posO.getX() - this.profileRec.width - 40 , 0));
+            this.getWidth() - (int) posO.getX() - this.profileRec.width - 40, 0));
     this.profileBtn.setBounds((int) pos.getX(), (int) pos.getY(), this.profileRec.width, this.profileRec.height);
     Map<TextAttribute, Integer> fontAttributes = new HashMap<TextAttribute, Integer>();
     fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
@@ -99,9 +99,11 @@ public class Header extends com.alexis.common.Component.Component {
     g2D.setPaint(gradient);
     g2D.fillRect(0, 0, getWidth(), getHeight());
 
-    int width = g.getFontMetrics(profileBtn.getFont()).stringWidth(profileBtn.getText());
-    this.profileRec.width = width;
-    this.setStyleComponents();
+    if (this.profileRec.width == 0) {
+      int width = g.getFontMetrics(profileBtn.getFont()).stringWidth(profileBtn.getText());
+      this.profileRec.width = width;
+      this.setStyleComponents();
+    }
     if (this.isLogoVisible)
       g2D.drawImage(logo, (int) logoPos.getX(), (int) logoPos.getY(), this);
   }
@@ -109,7 +111,7 @@ public class Header extends com.alexis.common.Component.Component {
   public void updateProps(ComponentProps props) {
     try {
       if (props.getPropsTypeName().equals(HeaderProps.TYPE_NAME)) {
-        this.props = (HeaderProps)props;
+        this.props = (HeaderProps) props;
       }
     } catch (Exception e) {
       e.printStackTrace();

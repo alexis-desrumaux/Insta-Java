@@ -1,0 +1,36 @@
+#User
+Forcreust
+ford+GT+1
+Alexis
+Desrumaux
+21
+forcreust@gmail.com
+VideoGames Memes
+src/com/alexis/assets/users/Forcreust/pp.png
+STANDARD
+##
+#Contents
+-Content
+My life now
+1652840856
+Forcreust
+Terrible
+src/com/alexis/assets/users/Forcreust/Personal/images/1652840856-buzz.jpg
+--
+##
+#GroupsOwned
+=Group
+Covid19 Memes
+France
+src/com/alexis/assets/users/Forcreust/Groups/Group_Covid19_Memes/ico.jpg
+Memes
+AlphaPaper ChickenX Cookie
+-Content
+My life now
+1652840856
+Forcreust
+Terrible
+src/com/alexis/assets/users/Forcreust/Groups/Group_Covid19_Memes/images/1652840856-buzz.jpg
+--
+==
+##

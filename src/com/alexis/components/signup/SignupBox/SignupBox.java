@@ -13,6 +13,7 @@ import java.awt.Color;
 import com.alexis.common.LayoutHelper.*;
 import com.alexis.common.Utils;
 import com.alexis.common.ComponentProps.ComponentProps;
+import com.alexis.common.Content.Content;
 import com.alexis.common.LayoutBuilder.*;
 import com.alexis.store.Store;
 import com.alexis.common.SimpleDocumentListener.*;
@@ -49,7 +50,7 @@ public class SignupBox extends com.alexis.common.Component.Component {
     }
     ArrayList<String> hobbies = new ArrayList<String>();
     hobbies.add("NONE");
-    User newUser = new StandardUser(this.username, this.password, "NONE", "NONE", 0, this.email, hobbies, "NONE");
+    User newUser = new StandardUser(this.username, this.password, "NONE", "NONE", 0, this.email, hobbies, "NONE", new ArrayList<Content>());
     Store.getInstance().setUser(newUser);
     UserSaveFileParser saveParser = new UserSaveFileParser(Utils.getSaveFilePathByUsername(this.username));
     saveParser.save(newUser);

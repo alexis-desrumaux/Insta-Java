@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.io.IOException;
 
+import com.alexis.common.Content.Content;
 import com.alexis.store.User;
 import com.alexis.store.User.USER_TYPE;
 
@@ -16,12 +17,14 @@ import java.util.List;
 
 public class UserSaveFileParser {
   private ArrayList<String> saveFileRawContent;
-  private Map<String, Map<String, String>> saveFileContent;
+  private Map<String, String> userSection;
+  private ArrayList<Map<String, String>> contentsSection;
   private String filePath;
   private boolean isEmpty;
 
   public static enum SectionKeys {
     USER,
+    CONTENTS,
   }
 
   public static enum UserKeys {
@@ -36,6 +39,14 @@ public class UserSaveFileParser {
     AccountType,
   }
 
+  public static enum ContentKeys {
+    TITLE,
+    CREATION_TIME,
+    AUTHOR,
+    TXT,
+    IMAGE_PATH,
+  }
+
   public boolean isEmpty() {
     return this.isEmpty;
   }
@@ -44,36 +55,67 @@ public class UserSaveFileParser {
     return this.filePath;
   }
 
-  public Map<String, String> getSection(SectionKeys key) {
+  /*public Map<String, String> getSectionFrom(SectionKeys key) {
     return this.saveFileContent.get(key.toString());
+  }*/
+
+  public ArrayList<Map<String, String>> getContentsSection() {
+    return this.contentsSection;
   }
 
-  private boolean saveUserSection(FileWriter myWriter, User user) {
+  public Map<String, String> getUserSection() {
+    return this.userSection;
+  }
+
+  private String saveContentsSection(FileWriter myWriter, User user, String fileContent) {
+    ArrayList<Content> contents = user.getContents();
+
+    fileContent += "#Contents\n";
+    for (Content c : contents) {
+      fileContent += "-Content\n";
+      fileContent += c.getTitle() + '\n';
+      fileContent += c.getCreationTime() + "\n";
+      fileContent += user.getNickName() + '\n';
+      fileContent += c.getTxt() + '\n';
+      fileContent += c.getImagePath() + '\n';
+      fileContent += "--\n";
+    }
+    fileContent += "##\n";
+    return fileContent;
+  }
+
+  private String saveUserSection(FileWriter myWriter, User user, String fileContent) {
+    String hobbies = "";
+    fileContent += "#User\n";
+    fileContent += user.getNickName() + '\n';
+    fileContent += user.getPassword() + '\n';
+    fileContent += user.getName() + '\n';
+    fileContent += user.getSurname() + '\n';
+    fileContent += Integer.toString(user.getAge()) + '\n';
+    fileContent += user.getEmail() + '\n';
+    for (int i = 0; i != user.getHobbies().size(); i += 1) {
+      if (i != 0) {
+        hobbies += ' ';
+      }
+      hobbies += user.getHobbies().get(i);
+    }
+    fileContent += hobbies + '\n';
+    fileContent += user.getPPPath() + '\n';
+    USER_TYPE userType = user.getUserType();
+    if (userType == USER_TYPE.STANDARD) {
+      fileContent += "STANDARD\n";
+    } else {
+      fileContent += "PREMIUM\n";
+    }
+    fileContent += "##\n";
+    return fileContent;
+  }
+
+  private boolean saveUser(FileWriter myWriter, User user) {
     try {
       String fileContent = "";
-      String hobbies = "";
-      fileContent += "#User\n";
-      fileContent += user.getNickName() + '\n';
-      fileContent += user.getPassword() + '\n';
-      fileContent += user.getName() + '\n';
-      fileContent += user.getSurname() + '\n';
-      fileContent += Integer.toString(user.getAge()) + '\n';
-      fileContent += user.getEmail() + '\n';
-      for (int i = 0; i != user.getHobbies().size(); i += 1) {
-        if (i != 0) {
-          hobbies += ' ';
-        }
-        hobbies += user.getHobbies().get(i);
-      }
-      fileContent += hobbies + '\n';
-      fileContent += user.getPPPath() + '\n';
-      USER_TYPE userType = user.getUserType();
-      if (userType == USER_TYPE.STANDARD) {
-        fileContent += "STANDARD\n";
-      } else {
-        fileContent += "PREMIUM\n";
-      }
-      fileContent += "##\n";
+      fileContent = this.saveUserSection(myWriter, user, fileContent);
+      fileContent = this.saveContentsSection(myWriter, user, fileContent);
       myWriter.write(fileContent);
       System.out.println("Successfully wrote to the file.");
       myWriter.close();
@@ -88,7 +130,10 @@ public class UserSaveFileParser {
   private boolean save_fileExist(User user) {
     try {
       FileWriter myWriter = new FileWriter(this.filePath);
-      return this.saveUserSection(myWriter, user);
+      if (this.saveUser(myWriter, user) == false)
+        return false;
+      return true;
+      //return this.saveUserSection(myWriter, user);
     } catch (IOException e) {
       System.out.println("Error. Unable to save");
       e.printStackTrace();
@@ -113,7 +158,50 @@ public class UserSaveFileParser {
     }
   }
 
-  private void parseUser() {
+  private int parseContents(int o) {
+    int i = o + 2;
+    this.contentsSection = new ArrayList<Map<String, String>>();
+
+    System.out.println(saveFileRawContent.get(o));
+    if (saveFileRawContent.get(i).equals("##") == true) {
+      return i;
+    }
+    i += 1;
+    int j = 0;
+    Map<String, String> content = new HashMap<String, String>();
+    for (; i != saveFileRawContent.size() && saveFileRawContent.get(i).equals("##") != true; i += 1) {
+      switch (j) {
+        case 0:
+          content.put(ContentKeys.TITLE.toString(), saveFileRawContent.get(i));
+          break;
+        case 1:
+          content.put(ContentKeys.CREATION_TIME.toString(), saveFileRawContent.get(i));
+          break;
+        case 2:
+          content.put(ContentKeys.AUTHOR.toString(), saveFileRawContent.get(i));
+          break;
+        case 3:
+          content.put(ContentKeys.TXT.toString(), saveFileRawContent.get(i));
+          break;
+        case 4:
+          content.put(ContentKeys.IMAGE_PATH.toString(), saveFileRawContent.get(i));
+          break;
+        default:
+          break;
+      }
+      j += 1;
+      if (saveFileRawContent.get(i).equals("--") == true) {
+        this.contentsSection.add(content);
+        content = new HashMap<String, String>();
+        j = -1;
+      }
+    }
+    if (content.isEmpty() == false)
+      this.contentsSection.add(content);
+    return i;
+  }
+
+  private int parseUser() {
     int i = 0;
     Map<String, String> content = new HashMap<String, String>();
     for (i = 1; i != saveFileRawContent.size() && saveFileRawContent.get(i).equals("##") != true; i += 1) {
@@ -149,13 +237,14 @@ public class UserSaveFileParser {
           break;
       }
     }
-    saveFileContent.put(SectionKeys.USER.toString(), content);
+    this.userSection = content;
     this.isEmpty = false;
+    return i;
   }
 
   public UserSaveFileParser(String filePath) {
     this.saveFileRawContent = new ArrayList<String>();
-    this.saveFileContent = new HashMap<String, Map<String, String>>();
+    this.userSection = new HashMap<String, String>();
     this.filePath = filePath;
     this.isEmpty = true;
 
@@ -165,8 +254,8 @@ public class UserSaveFileParser {
       while (myReader.hasNextLine()) {
         String data = myReader.nextLine();
         this.saveFileRawContent.add(data);
-        this.parseUser();
       }
+      this.parseContents(this.parseUser());
       myReader.close();
     } catch (FileNotFoundException e) {
       return;

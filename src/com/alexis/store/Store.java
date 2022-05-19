@@ -1,9 +1,9 @@
 package com.alexis.store;
 
-import java.io.IOError;
 import java.util.ArrayList;
 
 import com.alexis.app.*;
+import com.alexis.common.Content.Content;
 import com.alexis.common.UserType.StandardUser.*;
 
 public class Store {
@@ -11,6 +11,15 @@ public class Store {
   private App app;
   private User user;
   private OtherUsers otherUsers;
+  private Groups groups;
+
+  public Groups getGroups() {
+    return this.groups;
+  }
+
+  public void setGroups(Groups groups) {
+    this.groups = groups;
+  }
 
   public void setOtherUsers(OtherUsers otherUsers) {
     this.otherUsers = otherUsers;
@@ -44,7 +53,8 @@ public class Store {
   }
 
   public Store() {
-    this.user = new StandardUser("", "", "", "", 0, "", new ArrayList<String>(), "");
+    this.user = new StandardUser("", "", "", "", 0, "", new ArrayList<String>(), "", new ArrayList<Content>());
     this.otherUsers = new OtherUsers();
+    this.groups = new Groups();
   }
 }
