@@ -50,7 +50,7 @@ public class SignupBox extends com.alexis.common.Component.Component {
     }
     ArrayList<String> hobbies = new ArrayList<String>();
     hobbies.add("NONE");
-    User newUser = new StandardUser(this.username, this.password, "NONE", "NONE", 0, this.email, hobbies, "NONE", new ArrayList<Content>());
+    User newUser = new StandardUser(this.username, this.password, "NONE", "NONE", 0, this.email, hobbies, "NONE", new ArrayList<Content>(), new ArrayList<User>());
     Store.getInstance().setUser(newUser);
     UserSaveFileParser saveParser = new UserSaveFileParser(Utils.getSaveFilePathByUsername(this.username));
     saveParser.save(newUser);

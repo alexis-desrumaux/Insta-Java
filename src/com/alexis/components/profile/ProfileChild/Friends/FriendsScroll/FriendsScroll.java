@@ -1,4 +1,4 @@
-package com.alexis.components.profile.ProfileChild.Posts.PostsScroll;
+package com.alexis.components.profile.ProfileChild.Friends.FriendsScroll;
 
 import java.awt.*;
 import javax.swing.*;
@@ -23,6 +23,8 @@ import com.alexis.store.Store;
 import com.alexis.store.User;
 import com.alexis.common.SimpleDocumentListener.*;
 import com.alexis.common.UserSaveFileParser.UserSaveFileParser;
+import com.alexis.components._global.Item.Item;
+import com.alexis.components._global.Item.ItemProps;
 import com.alexis.components._global.Notification.Notification;
 import com.alexis.components.profile.ProfileChild.Posts.PostContent.PostContent;
 import com.alexis.components.profile.ProfileChild.Posts.PostContent.PostContentProps;
@@ -32,29 +34,51 @@ import javax.swing.filechooser.FileSystemView;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.nio.file.Files;
 
-public class PostsScroll extends com.alexis.common.Component.Component {
-  private PostsScrollProps props;
+public class FriendsScroll extends com.alexis.common.Component.Component {
+  private FriendsScrollProps props;
   private LayoutBuilder layoutBuilder;
-  private ArrayList<PostContent> posts;
+  private Map<User, Item> friends;
 
   public void updateContents() {
     this.removeAll();
-    this.posts.clear();
+    this.friends.clear();
     this.layoutBuilder.reset(LayoutBuilder.VERTICAL_ALIGN);
-    this.initPosts();
+    this.initFriends();
     this.setStyleComponents();
     this.revalidate();
   }
   
   private void setStylePosts() {
-    for (PostContent c : this.posts) {
-      Point pos = layoutBuilder.next(700, 200, new Margin(20, 0, LayoutHelper.getCenter(780, 0, 700, 0).x, 0));
-      c.updateProps(new PostContentProps(pos, c.getProps().content));
+    for (Map.Entry<User, Item> entry : this.friends.entrySet()) {
+      Point pos = layoutBuilder.next(600, 100, new Margin(20, 0, LayoutHelper.getCenter(780, 0, 600, 0).x, 0));
+      entry.getValue().updateProps(new ItemProps(pos, entry.getValue().getProps().icoPath, entry.getValue().getProps().title) {
+        @Override
+        public void onClick() {
+          System.out.println("Click on " + entry.getKey().getNickName());
+        }
+      });
     }
   }
 
-  private void initPosts() {
-    ArrayList<Content> contents = Store.getInstance().getUser().getContents();
+  private void initFriends() {
+    System.out.println("TEST!!!!!!!!!!");
+    ArrayList<User> friends = Store.getInstance().getUser().getFollows();
+    int i = 0;
+    for (User u : friends) {
+      System.out.println(u.getNickName());
+      Point pos = layoutBuilder.next(700, 200, new Margin(20, 0, LayoutHelper.getCenter(780, 0, 700, 0).x, 0));
+      Item p = new Item("Item" + i, this, new ItemProps(pos, u.getPPPath(), u.getNickName()) {
+        @Override
+        public void onClick() {
+
+        }
+      });
+      this.friends.put(u, p);
+      this.add(p);
+      i += 1;
+    }
+    
+    /*ArrayList<Content> contents = Store.getInstance().getUser().getContents();
     ArrayList<Content> contentsOrdered = new ArrayList<Content>();
     ArrayList<Long> orderedTimestamp = new ArrayList<Long>();
 
@@ -79,7 +103,7 @@ public class PostsScroll extends com.alexis.common.Component.Component {
       this.posts.add(p);
       this.add(p);
       i += 1;
-    }
+    }*/
   }
 
   private void setStylePanel() {
@@ -102,13 +126,13 @@ public class PostsScroll extends com.alexis.common.Component.Component {
 
   private void initClassAttributes() {
     this.layoutBuilder = new LayoutBuilder(0, 0, LayoutBuilder.VERTICAL_ALIGN);
-    this.posts = new ArrayList<PostContent>();
+    this.friends = new HashMap<User, Item>();
   }
 
   public void updateProps(ComponentProps newProps) {
     try {
-      if (newProps.getPropsTypeName().equals(PostsScrollProps.TYPE_NAME)) {
-        this.props = (PostsScrollProps) newProps;
+      if (newProps.getPropsTypeName().equals(FriendsScrollProps.TYPE_NAME)) {
+        this.props = (FriendsScrollProps) newProps;
         this.setStyleComponents();
       }
     } catch (Exception e) {
@@ -116,11 +140,11 @@ public class PostsScroll extends com.alexis.common.Component.Component {
     }
   }
 
-  public PostsScroll(String name, com.alexis.common.Component.Component parent, PostsScrollProps props) {
+  public FriendsScroll(String name, com.alexis.common.Component.Component parent, FriendsScrollProps props) {
     super(name, parent);
     this.props = props;
     this.initClassAttributes();
-    this.initPosts();
+    this.initFriends();
     this.setStyleComponents();
   }
 }

@@ -38,6 +38,7 @@ public class Posts extends com.alexis.common.Component.Component {
   private JButton browseBtn;
   private JButton addNewContentBtn;
   private JScrollPane scrollPane;
+  private PostsScroll postsScroll;
   private boolean dontUpdateNewContentInput;
   private boolean dontUpdateNewTitleInput;
   private String newContentTxt;
@@ -133,10 +134,13 @@ public class Posts extends com.alexis.common.Component.Component {
     this.layoutBuilder.setPosition(new Point(0, p.y));
     Point pos = this.layoutBuilder.next(800, 370);
     this.scrollPane.setBounds((int)pos.getX(), (int)pos.getY(), 800, 370);
+    this.scrollPane.setBorder(null);
+    this.postsScroll.updateContents();
   }
 
   private void initScroll() {
-    this.scrollPane = new JScrollPane(new PostsScroll("PostsScroll", this, new PostsScrollProps()));
+    this.postsScroll = new PostsScroll("PostsScroll", this, new PostsScrollProps());
+    this.scrollPane = new JScrollPane(this.postsScroll);
     this.add(scrollPane);
   }
 
@@ -284,7 +288,7 @@ public class Posts extends com.alexis.common.Component.Component {
     this.setOpaque(true);
     this.setFocusable(true);
     this.setBounds(this.props.position.x, this.props.position.y, 800, 420);
-    this.setBackground(Color.GREEN);
+    this.setBackground(new Color(241, 243, 245));
     this.setVisible(true);
   }
 

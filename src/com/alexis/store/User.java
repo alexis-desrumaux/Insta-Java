@@ -21,6 +21,7 @@ public abstract class User {
   protected String email;
   protected ArrayList<String> hobbies;
   protected String ppPath;
+  protected ArrayList<User> follows;
   protected USER_TYPE accountType;
   protected ArrayList<Content> contents;
 
@@ -53,6 +54,14 @@ public abstract class User {
       i += 1;
     }
     return s;
+  }
+
+  public ArrayList<User> getFollows() {
+    return this.follows;
+  }
+
+  public void setFollows(ArrayList<User> follows) {
+    this.follows = follows;
   }
 
   public void setContents(ArrayList<Content> contents) {
@@ -162,11 +171,11 @@ public abstract class User {
     }
     User user = null;
     if (accountType.equals("STANDARD")) {
-      user = new StandardUser("", "", "", "", 0, "", new ArrayList<String>(), "", new ArrayList<Content>());
+      user = new StandardUser("", "", "", "", 0, "", new ArrayList<String>(), "", new ArrayList<Content>(), new ArrayList<User>());
     } else if (accountType.equals("PREMIUM")) {
-      user = new PremiumUser("", "", "", "", 0, "", new ArrayList<String>(), "", new ArrayList<Content>());
+      user = new PremiumUser("", "", "", "", 0, "", new ArrayList<String>(), "", new ArrayList<Content>(), new ArrayList<User>());
     } else {
-      user = new StandardUser("", "", "", "", 0, "", new ArrayList<String>(), "", new ArrayList<Content>());
+      user = new StandardUser("", "", "", "", 0, "", new ArrayList<String>(), "", new ArrayList<Content>(), new ArrayList<User>());
     }
     ArrayList<Content> newC = createUserByFile_createContents(saveFile, user);
     user.setNickName(saveFile.getUserSection().get(UserKeys.NickName.toString()));
@@ -193,7 +202,7 @@ public abstract class User {
       int age,
       String email,
       ArrayList<String> hobbies,
-      String ppPath, ArrayList<Content> contents) {
+      String ppPath, ArrayList<Content> contents, ArrayList<User> follows) {
     this.nickName = nickName;
     this.password = password;
     this.name = name;
@@ -204,5 +213,6 @@ public abstract class User {
     this.ppPath = ppPath;
     this.accountType = USER_TYPE.STANDARD;
     this.contents = contents;
+    this.follows = follows;
   }
 }

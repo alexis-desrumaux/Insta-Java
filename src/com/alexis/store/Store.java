@@ -53,7 +53,7 @@ public class Store {
   }
 
   public Store() {
-    this.user = new StandardUser("", "", "", "", 0, "", new ArrayList<String>(), "", new ArrayList<Content>());
+    this.user = new StandardUser("", "", "", "", 0, "", new ArrayList<String>(), "", new ArrayList<Content>(), new ArrayList<User>());
     this.otherUsers = new OtherUsers();
     this.groups = new Groups();
   }

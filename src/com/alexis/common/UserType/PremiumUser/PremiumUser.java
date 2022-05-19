@@ -14,8 +14,8 @@ public class PremiumUser extends User {
       int age,
       String email,
       ArrayList<String> hobbies,
-      String ppPath, ArrayList<Content> contents) {
-    super(nickName, password, name, surname, age, email, hobbies, ppPath, contents);
+      String ppPath, ArrayList<Content> contents, ArrayList<User> follows) {
+    super(nickName, password, name, surname, age, email, hobbies, ppPath, contents, follows);
     this.accountType = USER_TYPE.PREMIUM;
   }
 }

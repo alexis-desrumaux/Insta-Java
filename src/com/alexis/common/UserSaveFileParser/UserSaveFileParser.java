@@ -36,6 +36,7 @@ public class UserSaveFileParser {
     Email,
     Hobbies,
     PP,
+    Follow,
     AccountType,
   }
 
@@ -86,6 +87,7 @@ public class UserSaveFileParser {
 
   private String saveUserSection(FileWriter myWriter, User user, String fileContent) {
     String hobbies = "";
+    String follows = "";
     fileContent += "#User\n";
     fileContent += user.getNickName() + '\n';
     fileContent += user.getPassword() + '\n';
@@ -101,6 +103,13 @@ public class UserSaveFileParser {
     }
     fileContent += hobbies + '\n';
     fileContent += user.getPPPath() + '\n';
+    for (int i = 0; i != user.getFollows().size(); i += 1) {
+      if (i != 0) {
+        follows += ' ';
+      }
+      follows += user.getFollows().get(i).getNickName();
+    }
+    fileContent += follows + '\n';
     USER_TYPE userType = user.getUserType();
     if (userType == USER_TYPE.STANDARD) {
       fileContent += "STANDARD\n";
@@ -231,6 +240,9 @@ public class UserSaveFileParser {
           content.put(UserKeys.PP.toString(), saveFileRawContent.get(i));
           break;
         case 9:
+          content.put(UserKeys.Follow.toString(), saveFileRawContent.get(i));
+          break;
+        case 10:
           content.put(UserKeys.AccountType.toString(), saveFileRawContent.get(i));
           break;
         default:

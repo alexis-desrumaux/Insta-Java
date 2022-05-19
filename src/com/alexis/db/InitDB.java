@@ -8,6 +8,10 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Arrays;
+import java.util.List;
 
 import com.alexis.common.Utils;
 import com.alexis.common.UserSaveFileParser.UserSaveFileParser;
@@ -84,11 +88,31 @@ public class InitDB {
     return userPaths;
   }
 
+  private static void initFollows(Map<User, String> follows) {
+    for (Map.Entry<User, String> e : follows.entrySet()) {
+      ArrayList<User> followArrayList = new ArrayList<User>();
+      if (e.getValue().equals("NONE") == false) {
+        List<String> followList = Arrays.asList(e.getValue().split(" "));
+        for (String f : followList) {
+          System.out.println("TEST-1: " + f);
+          followArrayList.add(Store.getInstance().getOtherUsers().findUserByUsername(f));
+        }
+      }
+      e.getKey().setFollows(followArrayList);
+    }
+  }
+
   public static void initUsers() {
     ArrayList<String> userPaths = getUsersPath();
+    Map<User, String> follows = new HashMap<User, String>();
     for (String userPath : userPaths) {
-      Store.getInstance().getOtherUsers().addUser(User.createUserByFile(new UserSaveFileParser(userPath)));
+      UserSaveFileParser save = new UserSaveFileParser(userPath);
+      User newUser = User.createUserByFile(save);
+      follows.put(newUser, save.getUserSection().get(UserSaveFileParser.UserKeys.Follow.toString()));
+      
+      Store.getInstance().getOtherUsers().addUser(newUser);
     }
+    initFollows(follows);
     System.out.println(Store.getInstance().getOtherUsers());
   }
 }
