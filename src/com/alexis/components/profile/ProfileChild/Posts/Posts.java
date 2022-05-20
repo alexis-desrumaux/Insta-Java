@@ -57,8 +57,6 @@ public class Posts extends com.alexis.common.Component.Component {
   }
 
   private void handleOnClickAddNewContent() {
-    System.out.println("ADD NEW CONTENT");
-    System.out.println(newContentTxt + " " + newTitleTxt + " " + imagePath);
     Timestamp t = new Timestamp(System.currentTimeMillis());
     User user = Store.getInstance().getUser();
     ArrayList<Content> contents = user.getContents();
@@ -77,7 +75,6 @@ public class Posts extends com.alexis.common.Component.Component {
       }
       contents.add(new Content(this.newTitleTxt, t.getTime(), user, this.newContentTxt, this.imagePath));
       user.setContents(contents);
-      System.out.println(user);
       UserSaveFileParser saveParser = new UserSaveFileParser(Utils.getSaveFilePathByUsername(user.getNickName()));
       saveParser.save(user);
     } catch (Exception e) {
@@ -103,8 +100,6 @@ public class Posts extends com.alexis.common.Component.Component {
       File selectedFile = jfc.getSelectedFile();
       this.imagePath = selectedFile.getAbsolutePath();
       this.fileName = selectedFile.getName();
-      System.out.println(this.fileName);
-      System.out.println(this.imagePath);
       this.setStyleComponents();
     }
   }

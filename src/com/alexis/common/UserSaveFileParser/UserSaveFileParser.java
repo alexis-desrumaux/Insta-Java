@@ -56,9 +56,11 @@ public class UserSaveFileParser {
     return this.filePath;
   }
 
-  /*public Map<String, String> getSectionFrom(SectionKeys key) {
-    return this.saveFileContent.get(key.toString());
-  }*/
+  /*
+   * public Map<String, String> getSectionFrom(SectionKeys key) {
+   * return this.saveFileContent.get(key.toString());
+   * }
+   */
 
   public ArrayList<Map<String, String>> getContentsSection() {
     return this.contentsSection;
@@ -103,13 +105,18 @@ public class UserSaveFileParser {
     }
     fileContent += hobbies + '\n';
     fileContent += user.getPPPath() + '\n';
+
     for (int i = 0; i != user.getFollows().size(); i += 1) {
       if (i != 0) {
         follows += ' ';
       }
       follows += user.getFollows().get(i).getNickName();
     }
-    fileContent += follows + '\n';
+    if (follows.equals("")) {
+      fileContent += "NONE" + '\n';
+    } else {
+      fileContent += follows + '\n';
+    }
     USER_TYPE userType = user.getUserType();
     if (userType == USER_TYPE.STANDARD) {
       fileContent += "STANDARD\n";
@@ -142,7 +149,7 @@ public class UserSaveFileParser {
       if (this.saveUser(myWriter, user) == false)
         return false;
       return true;
-      //return this.saveUserSection(myWriter, user);
+      // return this.saveUserSection(myWriter, user);
     } catch (IOException e) {
       System.out.println("Error. Unable to save");
       e.printStackTrace();
@@ -171,7 +178,6 @@ public class UserSaveFileParser {
     int i = o + 2;
     this.contentsSection = new ArrayList<Map<String, String>>();
 
-    System.out.println(saveFileRawContent.get(o));
     if (saveFileRawContent.get(i).equals("##") == true) {
       return i;
     }

@@ -47,7 +47,6 @@ public class Content extends com.alexis.common.Component.Component {
   private void handleOnClickNextButton() {
     User user = Store.getInstance().getUser();
     user.setPPPath(this.ppPath);
-    System.out.println(user);
     UserSaveFileParser saveParser = new UserSaveFileParser(Utils.getSaveFilePathByUsername(user.getNickName()));
     saveParser.save(user);
     Store.getInstance().getApp().displayMainFrame();

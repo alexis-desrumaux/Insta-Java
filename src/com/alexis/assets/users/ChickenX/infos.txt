@@ -1,0 +1,35 @@
+#User
+ChickenX
+chickenX4127
+Elsie
+Parker
+19
+elsie.parker@gmail.com
+Memes Music
+src/com/alexis/assets/users/ChickenX/pp.jpg
+BladeFish Forcreust
+PREMIUM
+##
+#Contents
+-Content
+Elton John
+1652930411210
+ChickenX
+He's old now
+src/com/alexis/assets/users/ChickenX/Personal/images/1652930411210-elton.jpeg
+--
+-Content
+Meme covid
+1652930455122
+ChickenX
+I like this
+src/com/alexis/assets/users/ChickenX/Personal/images/1652930455122-covid.jpg
+--
+-Content
+Hello!
+1653027160150
+ChickenX
+I'm new :D
+NONE
+--
+##

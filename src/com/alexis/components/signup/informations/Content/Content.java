@@ -48,7 +48,6 @@ public class Content extends com.alexis.common.Component.Component {
     user.setName(this.name);
     user.setSurname(this.surname);
     user.setHobbies(hobbies);
-    System.out.println(user);
     UserSaveFileParser saveParser = new UserSaveFileParser(Utils.getSaveFilePathByUsername(user.getNickName()));
     saveParser.save(user);
     Store.getInstance().getApp().getSigninFrame().changingToPicture();

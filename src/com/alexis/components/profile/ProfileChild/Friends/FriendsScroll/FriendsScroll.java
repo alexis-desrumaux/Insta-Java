@@ -61,11 +61,9 @@ public class FriendsScroll extends com.alexis.common.Component.Component {
   }
 
   private void initFriends() {
-    System.out.println("TEST!!!!!!!!!!");
     ArrayList<User> friends = Store.getInstance().getUser().getFollows();
     int i = 0;
     for (User u : friends) {
-      System.out.println(u.getNickName());
       Point pos = layoutBuilder.next(700, 200, new Margin(20, 0, LayoutHelper.getCenter(780, 0, 700, 0).x, 0));
       Item p = new Item("Item" + i, this, new ItemProps(pos, u.getPPPath(), u.getNickName()) {
         @Override

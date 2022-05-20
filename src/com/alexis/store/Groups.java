@@ -17,7 +17,6 @@ public class Groups {
 
   public boolean addGroup(Group newGroup) {
     if (newGroup != null) {
-      System.out.println(newGroup.getName());
       if (findGroupByName(newGroup.getName()) == null) {
         this.groups.add(newGroup);
         return true;

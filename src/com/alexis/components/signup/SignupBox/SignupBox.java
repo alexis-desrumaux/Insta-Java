@@ -118,7 +118,6 @@ public class SignupBox extends com.alexis.common.Component.Component {
     this.signinBtn = new JButton("Click here to log in");
     this.signinBtn.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        System.out.println("CLICK");
         Store.getInstance().getApp().getSigninFrame().changingToSignin();
       }
     });

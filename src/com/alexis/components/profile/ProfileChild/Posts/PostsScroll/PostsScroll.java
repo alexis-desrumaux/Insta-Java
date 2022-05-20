@@ -73,7 +73,6 @@ public class PostsScroll extends com.alexis.common.Component.Component {
     int i = 0;
 
     for (Content c : contentsOrdered) {
-      System.out.println(c.getTitle());
       Point pos = layoutBuilder.next(700, 200, new Margin(20, 0, LayoutHelper.getCenter(780, 0, 700, 0).x, 0));
       PostContent p = new PostContent("PostContent" + i, this, new PostContentProps(pos, c));
       this.posts.add(p);

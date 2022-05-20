@@ -21,7 +21,6 @@ public class SigninFrame {
       this.frame.getContentPane().add(this.main);
       this.frame.revalidate();
       this.frame.pack(); //
-      System.out.println("Picture !");
   }
 
   public void changingToInformations() {
@@ -31,7 +30,6 @@ public class SigninFrame {
       this.frame.getContentPane().add(this.main);
       this.frame.revalidate();
       this.frame.pack(); //
-      System.out.println("Informations !");
   }
 
   public void changingToSignin() {
@@ -41,7 +39,6 @@ public class SigninFrame {
     this.frame.getContentPane().add(this.main);
     this.frame.revalidate();
     this.frame.pack(); //
-    System.out.println("Signin !");
   }
 
   public void changingToSignup() {
@@ -51,7 +48,6 @@ public class SigninFrame {
     this.frame.getContentPane().add(this.main);
     this.frame.revalidate(); // in- and validate in one !!
     this.frame.pack(); //
-    System.out.println("Signup !");
   }
 
   public JFrame getFrame() {

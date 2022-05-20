@@ -51,7 +51,6 @@ public class Links extends com.alexis.common.Component.Component {
     this.profileBtn = new JButton("Profile");
     this.profileBtn.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        System.out.println("CLICK");
         Store.getInstance().getApp().getMainFrame().changingToProfile();
       }
     });
@@ -98,7 +97,6 @@ public class Links extends com.alexis.common.Component.Component {
     this.homeBtn = new JButton("Home");
     this.homeBtn.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        System.out.println("CLICK");
       }
     });
     this.homeBtn.setVisible(false);

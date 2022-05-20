@@ -21,7 +21,6 @@ public class OtherUsers {
 
   public boolean addUser(User newUser) {
     if (newUser != null) {
-      System.out.println(newUser.getNickName());
       if (findUserByUsername(newUser.getNickName()) == null) {
         this.otherUsers.add(newUser);
         return true;

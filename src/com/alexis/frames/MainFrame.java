@@ -24,7 +24,6 @@ public class MainFrame {
     this.frame.getContentPane().add(this.main);
     this.frame.revalidate(); // in- and validate in one !!
     this.frame.pack(); //
-    System.out.println("Profile !");
   }
 
   public MainFrame() {

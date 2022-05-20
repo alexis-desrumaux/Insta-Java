@@ -41,6 +41,7 @@ public abstract class User {
     s += "email=" + this.email + '\n';
     s += "hobbies=" + this.hobbies.toString() + '\n';
     s += "ppPath=" + this.ppPath + '\n';
+    s += "follows=" + this.follows.toString() + '\n';
     s += "accountType=" + this.accountType.toString();
 
     int i = 0;
@@ -143,7 +144,6 @@ public abstract class User {
   public static ArrayList<Content> createUserByFile_createContents(UserSaveFileParser saveFile, User u) {
     ArrayList<Content> newContents = new ArrayList<Content>();
     for (int i = 0; i != saveFile.getContentsSection().size(); i += 1) {
-      System.out.println(saveFile.getContentsSection().get(i).get(UserSaveFileParser.ContentKeys.TITLE.toString()));
       System.out
           .println(saveFile.getContentsSection().get(i).get(UserSaveFileParser.ContentKeys.CREATION_TIME.toString()));
       newContents.add(new Content(
@@ -187,11 +187,6 @@ public abstract class User {
     user.setHobbies(hobbiesArrayList);
     user.setPPPath(pp);
     user.setContents(newC);
-    /*
-     * if (user == null) {
-     * System.out.println("NULL");
-     * }
-     */
     return user;
   }
 

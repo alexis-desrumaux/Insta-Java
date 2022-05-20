@@ -52,7 +52,6 @@ public class Header extends com.alexis.common.Component.Component {
     this.profileRec = new Rectangle(0, 0, 0, 16);
     this.profileBtn.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        System.out.println("CLICK");
       }
     });
     this.profileBtn.setVisible(false);

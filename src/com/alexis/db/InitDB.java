@@ -94,7 +94,6 @@ public class InitDB {
       if (e.getValue().equals("NONE") == false) {
         List<String> followList = Arrays.asList(e.getValue().split(" "));
         for (String f : followList) {
-          System.out.println("TEST-1: " + f);
           followArrayList.add(Store.getInstance().getOtherUsers().findUserByUsername(f));
         }
       }
