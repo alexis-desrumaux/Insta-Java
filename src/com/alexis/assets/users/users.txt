@@ -3,3 +3,6 @@ AlphaPaper
 BladeFish
 ChickenX
 Cookie
+CovidSkill
+CrazyRed
+Frost
